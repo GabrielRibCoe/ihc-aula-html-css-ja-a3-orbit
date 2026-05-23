@@ -1,14 +1,12 @@
-// produto.html
-const params = new URLSearchParams(window.location.search);
-const id = params.get('id');
+const API_KEY = 'c3c539ca3bd243f5939861bf749e43e7';
+const id = new URLSearchParams(window.location.search).get('id');
 
-fetch('https://cors-proxy.igdb.com/v4/games', {
-  method: 'POST',
-  headers: { 'Client-ID': CLIENT_ID, 'Authorization': `Bearer ${ACCESS_TOKEN}` },
-  body: `fields name, summary, cover.url, rating, genres.name, screenshots.url; where id = ${id};`
-})
-.then(r => r.json())
-.then(data => {
-  const jogo = data[0];
-  // renderiza os detalhes do jogo
-});
+fetch(`https://api.rawg.io/api/games/${id}?key=${API_KEY}`)
+    .then(r => r.json())
+    .then(jogo => {
+        document.getElementById('nome').textContent = jogo.name;
+        document.getElementById('descricao').textContent = jogo.description_raw;
+        document.getElementById('capa').src = jogo.background_image;
+        document.getElementById('avaliacao').textContent = `Avaliação: ${jogo.rating}/5`;
+        document.getElementById('generos').textContent = jogo.genres?.map(g => g.name).join(', ');
+    });
