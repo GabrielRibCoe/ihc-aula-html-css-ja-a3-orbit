@@ -3,67 +3,12 @@
 <html lang="pt-br" data-bs-theme="dark">
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Orbit</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
-
-    <script>
-        const CLIENT_ID = 'Iwo5t037sfnyjhhxe0jdygp4enrizx';
-        const ACCESS_TOKEN = 'mlrn7b2p2r985327qpw3zgldtz262h';
-
-        async function carregarJogos() {
-            const response = await fetch('https://cors-proxy.igdb.com/v4/games', {
-                method: 'POST',
-                headers: {
-                    'Client-ID': CLIENT_ID,
-                    'Authorization': `Bearer ${ACCESS_TOKEN}`,
-                    'Content-Type': 'text/plain'
-                },
-                body: `
-      fields name, summary, cover.url, rating, genres.name;
-      limit 20;
-      sort rating desc;
-      where rating > 75 & cover != null;
-    `
-            });
-
-            const jogos = await response.json();
-            renderizarJogos(jogos);
-        }
-
-        function renderizarJogos(jogos) {
-            const container = document.getElementById('catalogo');
-
-            jogos.forEach(jogo => {
-                // A URL da capa vem como //images.igdb.com/..., precisa adicionar https:
-                const capa = jogo.cover
-                    ? 'https:' + jogo.cover.url.replace('t_thumb', 't_cover_big')
-                    : 'imagem-padrao.jpg';
-
-                const preco = (Math.random() * 150 + 20).toFixed(2); // preço simulado
-
-                container.innerHTML += `
-      <div class="col-md-3 mb-4">
-        <div class="card h-100">
-          <img src="${capa}" class="card-img-top" alt="${jogo.name}">
-          <div class="card-body">
-            <h5 class="card-title">${jogo.name}</h5>
-            <p class="card-text">${jogo.summary?.substring(0, 100) ?? ''}...</p>
-            <p class="fw-bold">R$ ${preco}</p>
-            <a href="produto.html?id=${jogo.id}" class="btn btn-primary">Ver jogo</a>
-          </div>
-        </div>
-      </div>
-    `;
-            });
-        }
-
-        carregarJogos();
-    </script>
     <style>
         .orbitmain {
             background-color: #6610f2;
@@ -72,12 +17,23 @@
         .orbitdark {
             color: #230752;
         }
-    </style>
 
+        .page-item.active .page-link {
+            background-color: #6610f2;
+            border-color: #6610f2;
+        }
+
+        .page-link {
+            color: #6610f2;
+        }
+
+        .page-link:hover {
+            color: #4a0ab5;
+        }
+    </style>
 </head>
 
 <body>
-
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -90,12 +46,10 @@
     <nav class="navbar navbar-expand-lg orbitmain">
         <div class="container-xl">
 
-            <!--Logo Orbit clicavel-->
             <a class="navbar-brand active" href="index.html">
                 <img src="./orbitlogo.png" alt="Logo" width="125" height="75" class="object-fit-cover" />
             </a>
 
-            <!--Botão explandivel quando a tela é pequena-->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -104,44 +58,163 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-                <!--Textos interativos-->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
                     <li class="nav-item">
-                        <a class="nav-link text-light" aria-current="page" href="biblioteca.html">Biblioteca</a>
+                        <a class="nav-link text-light" href="biblioteca.html">Biblioteca</a>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link active text-light" href="catalogo.html">Catalogo</a>
                     </li>
-
                 </ul>
 
-                <!--Carrinho-->
-
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-
                     <a class="nav-link text-light" href="carrinho.html">
                         <img src="./carrinhoicon.png" alt="Carrinho" width="30" height="30" class="m-3" />
                     </a>
                 </div>
 
-                <!--Barra de pesquisa-->
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="..." aria-label="Search" />
                     <button class="btn btn-outline-light" type="submit">Buscar</button>
                 </form>
-
 
             </div>
         </div>
     </nav>
 
     <div class="container mt-4">
+
+        <!-- Cards dos jogos -->
         <div class="row" id="catalogo">
             <!-- Cards gerados pelo JS -->
         </div>
+
+        <!-- Paginação -->
+        <nav class="mt-4 mb-5" aria-label="Paginação do catálogo">
+            <ul class="pagination justify-content-center" id="paginacao">
+                <!-- Botões gerados pelo JS -->
+            </ul>
+        </nav>
+
     </div>
+
+    <script>
+        const API_KEY = 'c3c539ca3bd243f5939861bf749e43e7';
+        const JOGOS_POR_PAGINA = 20;
+
+        let paginaAtual = 1;
+        let totalPaginas = 1;
+
+        async function carregarJogos(pagina) {
+            // Limpa o catálogo antes de carregar a nova página
+            document.getElementById('catalogo').innerHTML = '<p class="text-center">Carregando...</p>';
+
+            const response = await fetch(
+                `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-rating&page_size=${JOGOS_POR_PAGINA}&page=${pagina}&exclude_additions=true&exclude_tags=nsfw,adult,hentai,eroge,sexual+content`
+            );
+            const data = await response.json();
+
+            // Calcula o total de páginas (a RAWG retorna o total de jogos em data.count)
+            totalPaginas = Math.ceil(data.count / JOGOS_POR_PAGINA);
+
+            renderizarJogos(data.results);
+            renderizarPaginacao();
+
+            // Volta pro topo da página ao trocar de página
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Tags que devem ser bloqueadas
+        const TAGS_BLOQUEADAS = ['nsfw', 'adult', 'hentai', 'eroge', 'sexual content'];
+
+        function renderizarJogos(jogos) {
+            const container = document.getElementById('catalogo');
+            container.innerHTML = '';
+
+            // Filtra jogos com tags bloqueadas antes de renderizar
+            const jogosFiltrados = jogos.filter(jogo => {
+                const tags = jogo.tags?.map(t => t.slug) ?? [];
+                return !tags.some(tag => TAGS_BLOQUEADAS.includes(tag));
+            });
+
+            jogosFiltrados.forEach(jogo => {
+                const capa = jogo.background_image ?? 'imagem-padrao.jpg';
+                const preco = (Math.random() * 150 + 20).toFixed(2);
+
+                container.innerHTML += `
+            <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                    <img src="${capa}" class="card-img-top" alt="${jogo.name}">
+                    <div class="card-body">
+                        <h5 class="card-title">${jogo.name}</h5>
+                        <p class="text-muted">${jogo.genres?.map(g => g.name).join(', ') ?? ''}</p>
+                        <p class="fw-bold">R$ ${preco}</p>
+                        <a href="produto.html?id=${jogo.id}" class="btn btn-primary">Ver jogo</a>
+                    </div>
+                </div>
+            </div>
+        `;
+            });
+        }
+
+        function renderizarPaginacao() {
+            const paginacao = document.getElementById('paginacao');
+            paginacao.innerHTML = '';
+
+            // Botão "Anterior"
+            paginacao.innerHTML += `
+                <li class="page-item ${paginaAtual === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="trocarPagina(${paginaAtual - 1})">Anterior</a>
+                </li>
+            `;
+
+            // Gera até 5 botões de página ao redor da página atual
+            const inicio = Math.max(1, paginaAtual - 2);
+            const fim = Math.min(totalPaginas, paginaAtual + 2);
+
+            // Mostra "1 ..." se a janela não começa na página 1
+            if (inicio > 1) {
+                paginacao.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="trocarPagina(1)">1</a></li>`;
+                if (inicio > 2) {
+                    paginacao.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                }
+            }
+
+            // Páginas da janela
+            for (let i = inicio; i <= fim; i++) {
+                paginacao.innerHTML += `
+                    <li class="page-item ${i === paginaAtual ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="trocarPagina(${i})">${i}</a>
+                    </li>
+                `;
+            }
+
+            // Mostra "... última" se a janela não termina na última página
+            if (fim < totalPaginas) {
+                if (fim < totalPaginas - 1) {
+                    paginacao.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                }
+                paginacao.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="trocarPagina(${totalPaginas})">${totalPaginas}</a></li>`;
+            }
+
+            // Botão "Próximo"
+            paginacao.innerHTML += `
+                <li class="page-item ${paginaAtual === totalPaginas ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="trocarPagina(${paginaAtual + 1})">Próximo</a>
+                </li>
+            `;
+        }
+
+        function trocarPagina(pagina) {
+            if (pagina < 1 || pagina > totalPaginas) return;
+            paginaAtual = pagina;
+            carregarJogos(paginaAtual);
+        }
+
+        // Carrega a primeira página ao abrir
+        carregarJogos(paginaAtual);
+    </script>
+
 </body>
 
 </html>
