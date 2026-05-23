@@ -7,21 +7,26 @@
     <title>Orbit</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    
+
     <style>
-        .orbitmain{
+        .orbitmain {
             background-color: #6610f2;
         }
 
         .orbitdark {
             color: #230752;
         }
+
+        #capa {
+            max-height: 400px;
+            object-fit: cover;
+            width: 100%;
+            border-radius: 8px;
+        }
     </style>
+</head>
 
 <body>
-
-    <!-- navbar aqui -->
-
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -34,12 +39,10 @@
     <nav class="navbar navbar-expand-lg orbitmain">
         <div class="container-xl">
 
-            <!--Logo Orbit clicavel-->
-            <a class="navbar-brand " href="index.html">
+            <a class="navbar-brand" href="index.html">
                 <img src="./orbitlogo.png" alt="Logo" width="125" height="75" class="object-fit-cover" />
             </a>
 
-            <!--Botão explandivel quando a tela é pequena-->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -48,70 +51,76 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-                <!--Textos interativos-->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
                     <li class="nav-item">
-                        <a class="nav-link text-light" aria-current="page" href="biblioteca.html">Biblioteca</a>
+                        <a class="nav-link text-light" href="biblioteca.html">Biblioteca</a>
                     </li>
-
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="suporte.html">Suporte</a>
+                        <a class="nav-link text-light" href="catalogo.html">Catálogo</a>
                     </li>
-
                 </ul>
 
-                <!--Carrinho-->
-
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-
                     <a class="nav-link text-light" href="carrinho.html">
                         <img src="./carrinhoicon.png" alt="Carrinho" width="30" height="30" class="m-3" />
                     </a>
                 </div>
 
-                <!--Barra de pesquisa-->
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="..." aria-label="Search" />
                     <button class="btn btn-outline-light" type="submit">Buscar</button>
                 </form>
 
-
             </div>
         </div>
     </nav>
 
+    <!-- Conteúdo do produto -->
+    <div class="container mt-5">
+        <div class="row g-4">
+
+            <!-- Imagem do jogo -->
+            <div class="col-md-6">
+                <img id="capa" src="" alt="Capa do jogo">
+            </div>
+
+            <!-- Informações do jogo -->
+            <div class="col-md-6">
+                <h1 id="nome" class="mb-2"></h1>
+                <p id="generos" class="text-muted mb-3"></p>
+                <p id="avaliacao" class="mb-3"></p>
+                <p id="descricao" class="mb-4"></p>
+                <p id="preco" class="fs-4 fw-bold mb-4"></p>
+                <button class="btn btn-primary btn-lg">Adicionar ao Carrinho</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Script DEPOIS do HTML -->
     <script>
-        const CLIENT_ID = 'Iwo5t037sfnyjhhxe0jdygp4enrizx';
-        const ACCESS_TOKEN = 'mlrn7b2p2r985327qpw3zgldtz262h';
+        const API_KEY = 'SUA_KEY_AQUI';
 
-        const params = new URLSearchParams(window.location.search);
-        const id = params.get('id');
+        const id = new URLSearchParams(window.location.search).get('id');
 
-        fetch('https://cors-proxy.igdb.com/v4/games', {
-            method: 'POST',
-            headers: {
-                'Client-ID': CLIENT_ID,
-                'Authorization': `Bearer ${ACCESS_TOKEN}`
-            },
-            body: `fields name, summary, cover.url, rating, genres.name; where id = ${id};`
-        })
+        fetch(`https://api.rawg.io/api/games/${id}?key=${API_KEY}`)
             .then(r => r.json())
-            .then(data => {
-                const jogo = data[0];
+            .then(jogo => {
+                // Título da aba do navegador
+                document.title = jogo.name + ' — Orbit';
 
-                // Preenche cada elemento pelo id
                 document.getElementById('nome').textContent = jogo.name;
-                document.getElementById('descricao').textContent = jogo.summary;
-                document.getElementById('avaliacao').textContent = `Avaliação: ${jogo.rating?.toFixed(0)}/100`;
+                document.getElementById('capa').src = jogo.background_image ?? 'imagem-padrao.jpg';
+                document.getElementById('capa').alt = jogo.name;
+                document.getElementById('avaliacao').textContent = `Avaliação: ${jogo.rating}/5 ⭐ (${jogo.ratings_count} avaliações)`;
+                document.getElementById('descricao').textContent = jogo.description_raw ?? 'Sem descrição disponível.';
+                document.getElementById('generos').textContent = jogo.genres?.map(g => g.name).join(', ') ?? '';
 
-                document.getElementById('capa').src = jogo.cover
-                    ? 'https:' + jogo.cover.url.replace('t_thumb', 't_cover_big')
-                    : 'imagem-padrao.jpg';
-
-                document.getElementById('generos').textContent = jogo.genres
-                    ? jogo.genres.map(g => g.name).join(', ')
-                    : '';
+                const preco = (Math.random() * 150 + 20).toFixed(2);
+                document.getElementById('preco').textContent = `R$ ${preco}`;
+            })
+            .catch(() => {
+                document.getElementById('nome').textContent = 'Jogo não encontrado.';
             });
     </script>
 
