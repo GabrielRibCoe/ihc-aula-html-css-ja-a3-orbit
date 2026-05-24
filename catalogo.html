@@ -110,7 +110,7 @@
             document.getElementById('catalogo').innerHTML = '<p class="text-center">Carregando...</p>';
 
             const response = await fetch(
-                `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-rating&page_size=${JOGOS_POR_PAGINA}&page=${pagina}&exclude_additions=true&exclude_tags=nsfw,adult,hentai,eroge,sexual+content`
+                `https://api.rawg.io/api/games?key=${API_KEY}&metacritic=85,100&ordering=-ratingpage_size=${JOGOS_POR_PAGINA}&page=${pagina}`
             );
             const data = await response.json();
 
