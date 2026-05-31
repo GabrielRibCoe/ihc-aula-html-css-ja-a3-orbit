@@ -1,16 +1,16 @@
 <!doctype html>
-
 <html lang="pt-br" data-bs-theme="dark">
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Orbit</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 
     <style>
         .orbitmain {
@@ -20,12 +20,110 @@
         .orbitdark {
             color: #230752;
         }
-    </style>
 
+        .swiper-slide {
+            width: 35%;
+            height: auto;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .swiper-slide:hover .info-jogo {
+            opacity: 1 !important;
+        }
+
+        .swiper-slide-active {
+            opacity: 1;
+        }
+
+        .desc-limitada {
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            font-size: 0.8rem;
+            opacity: 0.85;
+            line-height: 1.3;
+        }
+
+        .mySwiper {
+            padding-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mySwiper::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 300px;
+            background: linear-gradient(to left, transparent, #212529);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .mySwiper::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 300px;
+            background: linear-gradient(to right, transparent, #212529);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            position: static;
+            width: auto;
+            height: auto;
+            margin: 0;
+            background: none;
+            color: inherit;
+        }
+
+        .swiper-button-next::after,
+        .swiper-button-prev::after {
+            display: none;
+        }
+
+        .swiper-pagination-bullet {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .swiper-pagination-bullet-active {
+            background-color: #6610f2;
+        }
+
+        #hoverGta {
+            cursor: pointer;
+            transition:
+                transform 0.3s ease,
+                box-shadow 0.3s ease,
+                filter 0.3s ease;
+        }
+
+        #hoverGta:hover,
+        #hoverGta:focus-visible {
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.3);
+            filter: brightness(1.1);
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+
+            #hoverGta:hover,
+            #hoverGta:focus-visible {
+                transform: scale(1.05) translateY(-10px);
+            }
+        }
+    </style>
 </head>
 
 <body>
-
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -33,17 +131,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"
         integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y"
         crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-    <!--Barra de navegação-->
+
     <nav class="navbar navbar-expand-lg orbitmain">
         <div class="container-xl">
-
-            <!--Logo Orbit clicavel-->
             <a class="navbar-brand active" href="index.html">
                 <img src="./orbitlogo.png" alt="Logo" width="125" height="75" class="object-fit-cover" />
             </a>
 
-            <!--Botão explandivel quando a tela é pequena-->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -51,43 +147,167 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-                <!--Textos interativos-->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
                     <li class="nav-item">
                         <a class="nav-link text-light" aria-current="page" href="biblioteca.html">Biblioteca</a>
                     </li>
-
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="catalogo.html">Catalogo</a>
+                        <a class="nav-link text-light" href="catalogo.html">Catálogo</a>
                     </li>
-
                 </ul>
 
-                <!--Carrinho-->
-
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-
                     <a class="nav-link text-light" href="carrinho.html">
                         <img src="./carrinhoicon.png" alt="Carrinho" width="30" height="30" class="m-3" />
                     </a>
                 </div>
 
-                <!--Barra de pesquisa-->
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="..." aria-label="Search" />
                     <button class="btn btn-outline-light" type="submit">Buscar</button>
                 </form>
-
-
             </div>
         </div>
     </nav>
 
-    <!-- No body do HTML -->
-    
+    <div class="d-flex flex-column align-items-stretch mt-5 mb-5">
 
+        <section class="mt-2 mb-5 flex-shrink-0">
+            <div class="container-xl d-flex flex-row align-items-center justify-content-between mb-3">
+                <h1>Em alta</h1>
+                <div class="setas d-flex flex-row align-items-center gap-3">
+                    <i class="bi bi-arrow-left-circle swiper-button-prev" style="cursor: pointer; font-size: 2rem;"></i>
+
+                    <i class="bi bi-arrow-right-circle swiper-button-next"
+                        style="cursor: pointer; font-size: 2rem;"></i>
+                </div>
+            </div>
+
+            <div class="swiper mySwiper p-3">
+                <div class="swiper-wrapper" id="slider">
+
+                </div>
+            </div>
+        </section>
+
+        <section class="container-xl">
+
+            <div id="categoria_jogos" class="row g-4 mt-5">
+
+
+
+        </section>
+
+    </div>
+
+    <script>
+
+        const swiper = new Swiper('.mySwiper', {
+            slidesPerView: 3.1,
+            spaceBetween: 70,
+            loop: true,
+            autoplay: {
+                delay: 2300,
+                disableOnInteraction: false
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+        });
+
+        const API_KEY = 'c3c539ca3bd243f5939861bf749e43e7';
+
+        async function carregarJogos(pagina) {
+
+            const response = await fetch(
+                `https://api.rawg.io/api/games?key=${API_KEY}&dates=2026-01-01,2026-05-24&ordering=-added&page_size=15&page=${pagina}`
+            );
+            const data = await response.json();
+
+            return data;
+        }
+
+        const listaJogos = carregarJogos(1);
+
+        listaJogos.then(jogos => {
+            console.log(jogos);
+        });
+
+        listaJogos.then(jogos => {
+            const slider = document.getElementById('slider');
+
+            jogos.results.forEach(jogo => {
+                const slide = document.createElement('div');
+                slide.classList.add('swiper-slide');
+                slide.innerHTML = `
+                    <div class="d-flex flex-row align-items-stretch rounded-3 overflow-hidden shadow w-100 position-relative" style="background-color: #31054a; height: 400px;" onclick="window.location.href='produto.html?id=${jogo.id}'">
+                        <div class="img-jogo flex-shrink-0" style="width: 100%; background-color: #d3d3d3;">
+                            <img src="${jogo.background_image}" class="w-100 h-100" style="object-fit: cover;" alt="Imagem do jogo" />
+                        </div>
+                        <div class="info-jogo d-flex flex-column text-white w-100 position-absolute bottom-0 start-0 end-0" style="background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); padding: 2rem 1rem 1rem; opacity: 0; transition: opacity 0.3s ease;">
+                            <h2 class="m-0 fs-4 fw-bold">${jogo.name}</h2>
+                            <p class="mt-2 mb-0 desc-limitada">${jogo.description || 'Sem descrição disponível.'}</p>
+                        </div>
+                    </div>
+                `;
+
+                slider.appendChild(slide);
+            });
+        });
+
+
+        swiper.update();
+
+        async function carregarLista(pagina) {
+
+            const response = await fetch(
+                `https://api.rawg.io/api/games?key=${API_KEY}&dates=2026-01-01,2026-05-24&ordering=-added&page_size=24&page=${pagina}`
+            );
+            const data = await response.json();
+
+            return data.results;
+        }
+        const listaJogos2 = carregarLista(1)
+        console.log(listaJogos2, "Lista de carregamento")
+        listaJogos2.then(jogos => {
+
+            console.log(jogos)
+            const categoria_jogos = document.getElementById('categoria_jogos')
+            jogos.forEach(jogo => {
+                const elemento = montaJogo(jogo.name, jogo.background_image, jogo.id)
+                categoria_jogos.innerHTML += elemento
+            })
+        })
+
+        function montaJogo(nome, imagem, id) {
+            return `
+                            <div class="col-12 col-md-4" onclick="window.location.href='produto.html?id=${id}'">
+                    <div class="card-jogo d-flex flex-column rounded-3 shadow h-100" id="hoverGta">
+                        <div class="img-jogo">
+                            <img src="${imagem}"
+                                class="w-100" style="height: 200px; object-fit: cover; " alt="Imagem do ${nome}">
+                        </div>
+
+                        <div class="info-jogo d-flex flex-column text-white" style="background-color: #31054a;">
+                            <h2 class="m-0 fs-4 fw-bold text-truncate text-center p-3">
+                                ${nome}
+                            </h2>
+
+                            <div class="mt-auto px-3 py-2 text-center preco-jogo">
+                                <span class="fs-4 fw-bold">R$ ${Math.floor(Math.random() *(300 - 30) + 30)}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                        `
+        }
+
+    </script>
 </body>
 
 </html>
