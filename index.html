@@ -39,6 +39,7 @@
         .desc-limitada {
             display: -webkit-box;
             -webkit-line-clamp: 4;
+            line-clamp: 4;
             -webkit-box-orient: vertical;
             overflow: hidden;
             font-size: 0.8rem;
@@ -109,7 +110,7 @@
 
         #hoverGta:hover,
         #hoverGta:focus-visible {
-            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 25px rgba(102, 16, 242, 0.4);
             filter: brightness(1.1);
         }
 
@@ -235,13 +236,41 @@
         const listaJogos = carregarJogos(1);
 
         listaJogos.then(jogos => {
-            console.log(jogos);
+            const slider = document.getElementById('slider');
+
+            // Remove duplicatas pelo id do jogo
+            const jogosSemDuplicatas = jogos.results.filter(
+                (jogo, index, self) => index === self.findIndex(j => j.id === jogo.id)
+            );
+
+            jogosSemDuplicatas.forEach(jogo => {
+                console.log(jogo.name); // ← adiciona essa linha temporariamente
+                const descricao = descricoes[jogo.name] ?? '...';
+            });
         });
+
+        const descricoes = {
+            'Resident Evil 9: Requiem': 'O pesadelo continua. Uma nova ameaça biológica surge nas sombras e apenas os mais corajosos sobreviverão para contar a história.',
+            'Pragmata': 'Terra, 2161. Uma missão impossível, uma criança misteriosa e um astronauta em busca de respostas num mundo à beira do colapso.',
+            'Replaced': 'Distopia pixel art como você nunca viu. Um retrofuturismo brutal onde uma IA luta pela sobrevivência nas ruas de uma América alternativa.',
+            'Crimson Desert': 'Sangue, honra e conquista. Um mundo aberto épico onde cada batalha esculpe a lenda de um mercenário sem pátria.',
+            'Reanimal': 'O medo voltou a ter quatro patas. Fuja, sobreviva e descubra os segredos sombrios que habitam as profundezas desta floresta.',
+            'Mouse': 'Noir, estilo e caos em cada quadro. Uma aventura de ação inspirada nos clássicos animados dos anos 30 — com muito mais violência.',
+            'Directive 8020': 'Comunicação recebida. Origem desconhecida. Em algum lugar entre as estrelas, algo está te esperando — e nem sempre com boas intenções.',
+            'Forza Horizon 6': 'Velocidade sem limites. O festival mais aguardado do mundo dos games volta com novos cenários, carros e adrenalina do início ao fim.',
+            'Cairn': 'Cada passo pode ser o último. Uma escalada técnica e brutal que desafia não só seus reflexos, mas sua vontade de chegar ao topo.',
+            'Mewgenics': 'Gatos, caos e genética absurda. Crie, evolua e sobreviva numa aventura roguelike tão imprevisível quanto os próprios felinos.',
+            'Saros': 'Um mundo consumido por um eclipse eterno. Explore ruínas de uma civilização esquecida e enfrente os horrores que a escuridão esconde.',
+            'Lego Batman: Legacy of the Dark Knight': 'Gotham nunca foi tão divertida — e tão perigosa. Monte, destrua e salve a cidade com tijolinhos, humor e muito estilo.',
+            'GreedFall: The Dying World': 'O continente está morrendo e a política é tão mortal quanto os monstros. Suas escolhas moldarão o destino de povos inteiros.',
+            'Slay the Spire 2': 'O espiral chama de novo. Construa seu deck, enfrente relíquias amaldiçoadas e descubra por que ninguém sai ileso da segunda subida.',
+        };
 
         listaJogos.then(jogos => {
             const slider = document.getElementById('slider');
 
             jogos.results.forEach(jogo => {
+                const descricao = descricoes[jogo.name] ?? 'Em breve mais informações sobre este título.';
                 const slide = document.createElement('div');
                 slide.classList.add('swiper-slide');
                 slide.innerHTML = `
@@ -251,7 +280,7 @@
                         </div>
                         <div class="info-jogo d-flex flex-column text-white w-100 position-absolute bottom-0 start-0 end-0" style="background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); padding: 2rem 1rem 1rem; opacity: 0; transition: opacity 0.3s ease;">
                             <h2 class="m-0 fs-4 fw-bold">${jogo.name}</h2>
-                            <p class="mt-2 mb-0 desc-limitada">${jogo.description || 'Sem descrição disponível.'}</p>
+                            <p class="mt-2 mb-0 desc-limitada">${descricao}</p>
                         </div>
                     </div>
                 `;
@@ -287,19 +316,20 @@
         function montaJogo(nome, imagem, id) {
             return `
                             <div class="col-12 col-md-4" onclick="window.location.href='produto.html?id=${id}'">
-                    <div class="card-jogo d-flex flex-column rounded-3 shadow h-100" id="hoverGta">
+                    <div class="card-jogo d-flex flex-column rounded-3 h-100" id="hoverGta">
                         <div class="img-jogo">
                             <img src="${imagem}"
                                 class="w-100" style="height: 200px; object-fit: cover; " alt="Imagem do ${nome}">
                         </div>
 
-                        <div class="info-jogo d-flex flex-column text-white" style="background-color: #31054a;">
-                            <h2 class="m-0 fs-4 fw-bold text-truncate text-center p-3">
+                        <div class="info-jogo d-flex flex-column text-white" style="background-color: #230752;">
+                            <h5 class="card-title" style="margin: 1rem;">
                                 ${nome}
-                            </h2>
+                            </h5>
+                            
 
-                            <div class="mt-auto px-3 py-2 text-center preco-jogo">
-                                <span class="fs-4 fw-bold">R$ ${Math.floor(Math.random() *(300 - 30) + 30)}</span>
+                            <div class="mt-auto px-3 py-2 preco-jogo">
+                                <span class="fs-4 fw-bold">R$ ${Math.floor(Math.random() * (300 - 30) + 30)}</span>
                             </div>
                         </div>
                     </div>
