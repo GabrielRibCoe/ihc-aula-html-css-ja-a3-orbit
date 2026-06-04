@@ -129,8 +129,9 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg orbitmain">
         <div class="container-xl">
-            <a class="navbar-brand active" href="index.html">
-                <img src="./orbitlogo.png" alt="Logo" width="125" height="75" class="object-fit-cover" />
+            <a class="navbar-brand active" href="index.html" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                title="Página Inicial">
+                <img src=" ./orbitlogo.png" alt="Logo" width="125" height="75" class="object-fit-cover" />
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -228,6 +229,11 @@
             </div>
 
         </div>
+    </div>
+
+    <div class="container-xl mb-5">
+        <hr>
+        <p class="text-center text-muted">© 2026 Orbit. Todos os direitos reservados.</p>
     </div>
 
     <script>
@@ -383,6 +389,11 @@
         }
 
         carregarJogos(1);
+
+        // Ativa todos os tooltips da página
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+            new bootstrap.Tooltip(el);
+        });
     </script>
 
 </body>
