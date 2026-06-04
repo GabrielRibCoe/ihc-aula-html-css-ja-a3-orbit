@@ -11,8 +11,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
-        .orbitmain { background-color: #6610f2; }
-        .orbitdark { color: #230752; }
+        .orbitmain {
+            background-color: #6610f2;
+        }
+
+        .orbitdark {
+            color: #230752;
+        }
 
         /* Swiper Em Alta */
         .swiper-slide {
@@ -21,8 +26,15 @@
             opacity: 1;
             transition: opacity 0.3s ease;
         }
-        .swiper-slide:hover .info-jogo { opacity: 1 !important; }
-        .swiper-slide-active { opacity: 1; }
+
+        .swiper-slide:hover .info-jogo {
+            opacity: 1 !important;
+        }
+
+        .swiper-slide-active {
+            opacity: 1;
+        }
+
         .desc-limitada {
             display: -webkit-box;
             -webkit-line-clamp: 4;
@@ -33,50 +45,74 @@
             opacity: 0.85;
             line-height: 1.3;
         }
+
         .mySwiper {
             padding-bottom: 40px;
             position: relative;
             overflow: hidden;
         }
+
         .mySwiper::before {
             content: '';
             position: absolute;
-            left: 0; top: 0; bottom: 0;
+            left: 0;
+            top: 0;
+            bottom: 0;
             width: 300px;
             background: linear-gradient(to left, transparent, #212529);
             pointer-events: none;
             z-index: 5;
         }
+
         .mySwiper::after {
             content: '';
             position: absolute;
-            right: 0; top: 0; bottom: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
             width: 300px;
             background: linear-gradient(to right, transparent, #212529);
             pointer-events: none;
             z-index: 5;
         }
-        .swiper-button-next, .swiper-button-prev {
+
+        .swiper-button-next,
+        .swiper-button-prev {
             position: static;
-            width: auto; height: auto;
+            width: auto;
+            height: auto;
             margin: 0;
             background: none;
             color: inherit;
         }
-        .swiper-button-next::after, .swiper-button-prev::after { display: none; }
-        .swiper-pagination-bullet { background-color: rgba(255,255,255,0.5); }
-        .swiper-pagination-bullet-active { background-color: #6610f2; }
+
+        .swiper-button-next::after,
+        .swiper-button-prev::after {
+            display: none;
+        }
+
+        .swiper-pagination-bullet {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .swiper-pagination-bullet-active {
+            background-color: #6610f2;
+        }
 
         /* Cards de categoria */
         .card-jogo {
             transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
         }
+
         .card-jogo:hover {
             box-shadow: 0 8px 25px rgba(102, 16, 242, 0.4);
             filter: brightness(1.1);
         }
+
         @media (prefers-reduced-motion: no-preference) {
-            .card-jogo:hover { transform: scale(1.05) translateY(-10px); }
+            .card-jogo:hover {
+                transform: scale(1.05) translateY(-10px);
+            }
         }
 
         /* Slider de categorias */
@@ -89,9 +125,20 @@
             scrollbar-width: thin;
             scrollbar-color: #6610f2 #1a1a2e;
         }
-        .categoria-slider::-webkit-scrollbar { height: 5px; }
-        .categoria-slider::-webkit-scrollbar-track { background: #1a1a2e; border-radius: 10px; }
-        .categoria-slider::-webkit-scrollbar-thumb { background: #6610f2; border-radius: 10px; }
+
+        .categoria-slider::-webkit-scrollbar {
+            height: 5px;
+        }
+
+        .categoria-slider::-webkit-scrollbar-track {
+            background: #1a1a2e;
+            border-radius: 10px;
+        }
+
+        .categoria-slider::-webkit-scrollbar-thumb {
+            background: #6610f2;
+            border-radius: 10px;
+        }
 
         .categoria-card {
             min-width: 200px;
@@ -109,9 +156,15 @@
             transition: color 0.2s;
             padding: 0;
         }
-        .btn-scroll:hover { color: #6610f2; }
 
-        .secao-categoria { margin-bottom: 3rem; }
+        .btn-scroll:hover {
+            color: #6610f2;
+        }
+
+        .secao-categoria {
+            margin-bottom: 3rem;
+        }
+
     </style>
 </head>
 
@@ -128,8 +181,9 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg orbitmain">
         <div class="container-xl">
-            <a class="navbar-brand active" href="index.html">
-                <img src="./orbitlogo.png" alt="Logo" width="125" height="75" class="object-fit-cover" />
+            <a class="navbar-brand active" href="index.html" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                title="Página Inicial">
+                <img src=" ./orbitlogo.png" alt="Logo" width="125" height="75" class="object-fit-cover" />
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -166,7 +220,8 @@
                 <h1>Em alta</h1>
                 <div class="setas d-flex flex-row align-items-center gap-3">
                     <i class="bi bi-arrow-left-circle swiper-button-prev" style="cursor: pointer; font-size: 2rem;"></i>
-                    <i class="bi bi-arrow-right-circle swiper-button-next" style="cursor: pointer; font-size: 2rem;"></i>
+                    <i class="bi bi-arrow-right-circle swiper-button-next"
+                        style="cursor: pointer; font-size: 2rem;"></i>
                 </div>
             </div>
             <div class="swiper mySwiper p-3">
@@ -179,6 +234,16 @@
 
     </div>
 
+    <div class="container-xl mb-5">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item text-muted text-center">
+                <a class="nav-link text-light" href="catalogo.html">Não encontrou o que você procura? Visite o nosso catálogo!</a>
+            </li>
+        </ul>
+    
+        <hr>
+        <p class="text-center text-muted">© 2026 Orbit. Todos os direitos reservados.</p>
+    </div>
     <script>
         // ── Swiper Em Alta ──────────────────────────────────────────────
         const swiper = new Swiper('.mySwiper', {
@@ -201,23 +266,22 @@
 
         // ── Descrições personalizadas (Em Alta) ─────────────────────────
         const descricoes = {
-            'Resident Evil 9: Requiem': 'O pesadelo continua. Uma nova ameaça biológica surge nas sombras e apenas os mais corajosos sobreviverão para contar a história.',
-            'Pragmata': 'Terra, 2161. Uma missão impossível, uma criança misteriosa e um astronauta em busca de respostas num mundo à beira do colapso.',
-            'Replaced': 'Distopia pixel art como você nunca viu. Um retrofuturismo brutal onde uma IA luta pela sobrevivência nas ruas de uma América alternativa.',
-            'Crimson Desert': 'Sangue, honra e conquista. Um mundo aberto épico onde cada batalha esculpe a lenda de um mercenário sem pátria.',
+            'Resident Evil 9: Requiem': 'Réquiem para os mortos, pesadelo para os vivos. Raccoon City te espera novamente.',
+            'Pragmata': 'Acompanhe Hugh, membro de uma arruinada equipe de investigação, e Diana, um androide, enquanto exploram uma instalação lunar controlada por uma IA rebelde e tentam voltar à Terra.',
+            'Replaced': 'Enfrente as consequências das ações da Corporação Fênix pelos olhos de sua própria criação, R.E.A.C.H., uma inteligência artificial presa em um corpo humano.',
+            'Crimson Desert': 'Bem-vindo a Pywel. Das regiões selvagens e cidades ao misterioso Abismo, forje seu caminho com batalhas e descobertas.',
             'Reanimal': 'O medo voltou a ter quatro patas. Fuja, sobreviva e descubra os segredos sombrios que habitam as profundezas desta floresta.',
-            'Mouse': 'Noir, estilo e caos em cada quadro. Uma aventura de ação inspirada nos clássicos animados dos anos 30 — com muito mais violência.',
+            'MOUSE: P.I. For Hire': 'Noir, estilo e caos em cada quadro. Uma aventura de ação inspirada nos clássicos animados dos anos 30 — com muito mais violência.',
             'Directive 8020': 'Comunicação recebida. Origem desconhecida. Em algum lugar entre as estrelas, algo está te esperando — e nem sempre com boas intenções.',
             'Forza Horizon 6': 'Velocidade sem limites. O festival mais aguardado do mundo dos games volta com novos cenários, carros e adrenalina do início ao fim.',
             'Cairn': 'Cada passo pode ser o último. Uma escalada técnica e brutal que desafia não só seus reflexos, mas sua vontade de chegar ao topo.',
             'Mewgenics': 'Gatos, caos e genética absurda. Crie, evolua e sobreviva numa aventura roguelike tão imprevisível quanto os próprios felinos.',
-            'Saros': 'Um mundo consumido por um eclipse eterno. Explore ruínas de uma civilização esquecida e enfrente os horrores que a escuridão esconde.',
-            'Lego Batman: Legacy of the Dark Knight': 'Gotham nunca foi tão divertida — e tão perigosa. Monte, destrua e salve a cidade com tijolinhos, humor e muito estilo.',
-            'GreedFall: The Dying World': 'O continente está morrendo e a política é tão mortal quanto os monstros. Suas escolhas moldarão o destino de povos inteiros.',
+            'Marathon': 'Jogue como um Corredor biocibernético e explore a colônia perdida de Tau Ceti IV no FPS PvPvE de extração dos criadores de Halo e Destiny.',
+            'Mixtape': 'Na última noite no colégio, três amigos embarcam em mais uma aventura juntos. Jogue uma coletânea de lembranças, na companhia da trilha sonora de uma geração.',
             'Slay the Spire 2': 'O espiral chama de novo. Construa seu deck, enfrente relíquias amaldiçoadas e descubra por que ninguém sai ileso da segunda subida.',
         };
 
-        
+
 
         // ── Filtro NSFW (aplicado em todas as seções) ───────────────────
         const TAGS_BLOQUEADAS = ['nsfw', 'adult', 'hentai', 'eroge', 'sexual-content', 'nudity', 'explicit'];
@@ -272,11 +336,11 @@
 
         // ── Categorias de destaque ──────────────────────────────────────
         const CATEGORIAS = [
-            { id: 'acao',       nome: '🔥 Jogos de Ação',         generoId: 4,  paginaAleatoria: Math.ceil(Math.random() * 5) },
-            { id: 'aventura',   nome: '🗺️ Jogos de Aventura',     generoId: 3,  paginaAleatoria: Math.ceil(Math.random() * 5) },
-            { id: 'rpg',        nome: '⚔️ RPG',                   generoId: 5,  paginaAleatoria: Math.ceil(Math.random() * 5) },
-            { id: 'estrategia', nome: '🧩 Puzzle & Estratégia',   generoId: 10, paginaAleatoria: Math.ceil(Math.random() * 5) },
-            { id: 'corrida',    nome: '🏎️ Corrida & Esportes',    generoId: 1,  paginaAleatoria: Math.ceil(Math.random() * 5) },
+            { id: 'acao', nome: '🔥 Jogos de Ação', generoId: 4, paginaAleatoria: Math.ceil(Math.random() * 5) },
+            { id: 'aventura', nome: '🗺️ Jogos de Aventura', generoId: 3, paginaAleatoria: Math.ceil(Math.random() * 5) },
+            { id: 'rpg', nome: '⚔️ RPG', generoId: 5, paginaAleatoria: Math.ceil(Math.random() * 5) },
+            { id: 'estrategia', nome: '🧩 Puzzle & Estratégia', generoId: 10, paginaAleatoria: Math.ceil(Math.random() * 5) },
+            { id: 'corrida', nome: '🏎️ Corrida & Esportes', generoId: 1, paginaAleatoria: Math.ceil(Math.random() * 5) },
         ];
 
         async function carregarCategoria(categoria) {
@@ -293,7 +357,7 @@
             return `
                 <div class="categoria-card"">
                     <div class="card-jogo d-flex flex-column rounded-3 h-100" style="overflow: hidden;">
-                        <img src="${capa}" style="height: 130px; object-fit: cover; width: 100%;" alt="${jogo.name}">
+                        <img src="${capa}" style="height: 150px; object-fit: cover; width: 100%;" alt="${jogo.name}">
                         <div class="d-flex flex-column text-white flex-grow-1" style="background-color: #230752; padding: 0.75rem;">
                             <h6 class="mb-1" style="font-size: 0.85rem; line-height: 1.3;">${jogo.name}</h6>
                             <p class="text-muted mb-2" style="font-size: 0.75rem;">${generos}</p>
@@ -351,6 +415,14 @@
         }
 
         carregarTodasCategorias();
+
+        //Ativar tooltips do Bootstrap
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+            new bootstrap.Tooltip(el);
+        });
     </script>
+
+
 </body>
+
 </html>
