@@ -103,6 +103,13 @@
 
         const id = new URLSearchParams(window.location.search).get('id');
 
+        function gerarPreco(id) {
+            // Usa o id do jogo como semente — sempre gera o mesmo número para o mesmo jogo
+            const semente = id * 9301 + 49297;
+            const pseudo = (semente % 233280) / 233280;
+            return (pseudo * 280 + 20).toFixed(2);
+        }
+
         fetch(`https://api.rawg.io/api/games/${id}?key=${API_KEY}`)
             .then(r => r.json())
             .then(jogo => {
@@ -112,11 +119,11 @@
                 document.getElementById('nome').textContent = jogo.name;
                 document.getElementById('capa').src = jogo.background_image ?? 'imagem-padrao.jpg';
                 document.getElementById('capa').alt = jogo.name;
-                document.getElementById('avaliacao').textContent = `Avaliação: ${jogo.rating}/5 ⭐ (${jogo.ratings_count} avaliações)`;
+                document.getElementById('avaliacao').textContent = `AvaliaçãoQ ${jogo.rating}/5 ⭐ (${jogo.ratings_count} avaliações)`;
                 document.getElementById('descricao').textContent = jogo.description_raw ?? 'Sem descrição disponível.';
                 document.getElementById('generos').textContent = jogo.genres?.map(g => g.name).join(', ') ?? '';
 
-                const preco = (Math.random() * 150 + 20).toFixed(2);
+                const preco = gerarPreco(jogo.id);
                 document.getElementById('preco').textContent = `R$ ${preco}`;
             })
             .catch(() => {
