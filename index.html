@@ -7,35 +7,22 @@
     <title>Orbit</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-
     <style>
-        .orbitmain {
-            background-color: #6610f2;
-        }
+        .orbitmain { background-color: #6610f2; }
+        .orbitdark { color: #230752; }
 
-        .orbitdark {
-            color: #230752;
-        }
-
+        /* Swiper Em Alta */
         .swiper-slide {
             width: 35%;
             height: auto;
             opacity: 1;
             transition: opacity 0.3s ease;
         }
-
-        .swiper-slide:hover .info-jogo {
-            opacity: 1 !important;
-        }
-
-        .swiper-slide-active {
-            opacity: 1;
-        }
-
+        .swiper-slide:hover .info-jogo { opacity: 1 !important; }
+        .swiper-slide-active { opacity: 1; }
         .desc-limitada {
             display: -webkit-box;
             -webkit-line-clamp: 4;
@@ -46,81 +33,85 @@
             opacity: 0.85;
             line-height: 1.3;
         }
-
         .mySwiper {
             padding-bottom: 40px;
             position: relative;
             overflow: hidden;
         }
-
         .mySwiper::before {
             content: '';
             position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
+            left: 0; top: 0; bottom: 0;
             width: 300px;
             background: linear-gradient(to left, transparent, #212529);
             pointer-events: none;
             z-index: 5;
         }
-
         .mySwiper::after {
             content: '';
             position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
+            right: 0; top: 0; bottom: 0;
             width: 300px;
             background: linear-gradient(to right, transparent, #212529);
             pointer-events: none;
             z-index: 5;
         }
-
-        .swiper-button-next,
-        .swiper-button-prev {
+        .swiper-button-next, .swiper-button-prev {
             position: static;
-            width: auto;
-            height: auto;
+            width: auto; height: auto;
             margin: 0;
             background: none;
             color: inherit;
         }
+        .swiper-button-next::after, .swiper-button-prev::after { display: none; }
+        .swiper-pagination-bullet { background-color: rgba(255,255,255,0.5); }
+        .swiper-pagination-bullet-active { background-color: #6610f2; }
 
-        .swiper-button-next::after,
-        .swiper-button-prev::after {
-            display: none;
+        /* Cards de categoria */
+        .card-jogo {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
         }
-
-        .swiper-pagination-bullet {
-            background-color: rgba(255, 255, 255, 0.5);
-        }
-
-        .swiper-pagination-bullet-active {
-            background-color: #6610f2;
-        }
-
-        #hoverGta {
-            cursor: pointer;
-            transition:
-                transform 0.3s ease,
-                box-shadow 0.3s ease,
-                filter 0.3s ease;
-        }
-
-        #hoverGta:hover,
-        #hoverGta:focus-visible {
+        .card-jogo:hover {
             box-shadow: 0 8px 25px rgba(102, 16, 242, 0.4);
             filter: brightness(1.1);
         }
-
         @media (prefers-reduced-motion: no-preference) {
-
-            #hoverGta:hover,
-            #hoverGta:focus-visible {
-                transform: scale(1.05) translateY(-10px);
-            }
+            .card-jogo:hover { transform: scale(1.05) translateY(-10px); }
         }
+
+        /* Slider de categorias */
+        .categoria-slider {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: thin;
+            scrollbar-color: #6610f2 #1a1a2e;
+        }
+        .categoria-slider::-webkit-scrollbar { height: 5px; }
+        .categoria-slider::-webkit-scrollbar-track { background: #1a1a2e; border-radius: 10px; }
+        .categoria-slider::-webkit-scrollbar-thumb { background: #6610f2; border-radius: 10px; }
+
+        .categoria-card {
+            min-width: 200px;
+            max-width: 200px;
+            scroll-snap-align: start;
+            flex-shrink: 0;
+        }
+
+        .btn-scroll {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: color 0.2s;
+            padding: 0;
+        }
+        .btn-scroll:hover { color: #6610f2; }
+
+        .secao-categoria { margin-bottom: 3rem; }
     </style>
 </head>
 
@@ -134,35 +125,31 @@
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg orbitmain">
         <div class="container-xl">
             <a class="navbar-brand active" href="index.html">
                 <img src="./orbitlogo.png" alt="Logo" width="125" height="75" class="object-fit-cover" />
             </a>
-
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link text-light" aria-current="page" href="biblioteca.html">Biblioteca</a>
+                        <a class="nav-link text-light" href="biblioteca.html">Biblioteca</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-light" href="catalogo.html">Catálogo</a>
                     </li>
                 </ul>
-
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <a class="nav-link text-light" href="carrinho.html">
                         <img src="./carrinhoicon.png" alt="Carrinho" width="30" height="30" class="m-3" />
                     </a>
                 </div>
-
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="..." aria-label="Search" />
                     <button class="btn btn-outline-light" type="submit">Buscar</button>
@@ -173,82 +160,46 @@
 
     <div class="d-flex flex-column align-items-stretch mt-5 mb-5">
 
+        <!-- Seção Em Alta (código original do seu amigo, sem alterações) -->
         <section class="mt-2 mb-5 flex-shrink-0">
             <div class="container-xl d-flex flex-row align-items-center justify-content-between mb-3">
                 <h1>Em alta</h1>
                 <div class="setas d-flex flex-row align-items-center gap-3">
                     <i class="bi bi-arrow-left-circle swiper-button-prev" style="cursor: pointer; font-size: 2rem;"></i>
-
-                    <i class="bi bi-arrow-right-circle swiper-button-next"
-                        style="cursor: pointer; font-size: 2rem;"></i>
+                    <i class="bi bi-arrow-right-circle swiper-button-next" style="cursor: pointer; font-size: 2rem;"></i>
                 </div>
             </div>
-
             <div class="swiper mySwiper p-3">
-                <div class="swiper-wrapper" id="slider">
-
-                </div>
+                <div class="swiper-wrapper" id="slider"></div>
             </div>
         </section>
 
-        <section class="container-xl">
-
-            <div id="categoria_jogos" class="row g-4 mt-5">
-
-
-
-        </section>
+        <!-- Seções de categorias geradas pelo JS -->
+        <div class="container-xl" id="secoes-categorias"></div>
 
     </div>
 
     <script>
-
+        // ── Swiper Em Alta ──────────────────────────────────────────────
         const swiper = new Swiper('.mySwiper', {
             slidesPerView: 3.1,
             spaceBetween: 70,
             loop: true,
-            autoplay: {
-                delay: 2300,
-                disableOnInteraction: false
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
+            autoplay: { delay: 2300, disableOnInteraction: false },
+            navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+            pagination: { el: '.swiper-pagination', clickable: true },
         });
 
         const API_KEY = 'c3c539ca3bd243f5939861bf749e43e7';
 
-        async function carregarJogos(pagina) {
-
-            const response = await fetch(
-                `https://api.rawg.io/api/games?key=${API_KEY}&dates=2026-01-01,2026-05-24&ordering=-added&page_size=15&page=${pagina}`
-            );
-            const data = await response.json();
-
-            return data;
+        // ── Utilitários ─────────────────────────────────────────────────
+        function gerarPreco(id) {
+            const semente = id * 9301 + 49297;
+            const pseudo = (semente % 233280) / 233280;
+            return (pseudo * 280 + 20).toFixed(2);
         }
 
-        const listaJogos = carregarJogos(1);
-
-        listaJogos.then(jogos => {
-            const slider = document.getElementById('slider');
-
-            // Remove duplicatas pelo id do jogo
-            const jogosSemDuplicatas = jogos.results.filter(
-                (jogo, index, self) => index === self.findIndex(j => j.id === jogo.id)
-            );
-
-            jogosSemDuplicatas.forEach(jogo => {
-                console.log(jogo.name); // ← adiciona essa linha temporariamente
-                const descricao = descricoes[jogo.name] ?? '...';
-            });
-        });
-
+        // ── Descrições personalizadas (Em Alta) ─────────────────────────
         const descricoes = {
             'Resident Evil 9: Requiem': 'O pesadelo continua. Uma nova ameaça biológica surge nas sombras e apenas os mais corajosos sobreviverão para contar a história.',
             'Pragmata': 'Terra, 2161. Uma missão impossível, uma criança misteriosa e um astronauta em busca de respostas num mundo à beira do colapso.',
@@ -266,78 +217,140 @@
             'Slay the Spire 2': 'O espiral chama de novo. Construa seu deck, enfrente relíquias amaldiçoadas e descubra por que ninguém sai ileso da segunda subida.',
         };
 
+        
+
+        // ── Filtro NSFW (aplicado em todas as seções) ───────────────────
+        const TAGS_BLOQUEADAS = ['nsfw', 'adult', 'hentai', 'eroge', 'sexual-content', 'nudity', 'explicit'];
+
+        function filtrarNSFW(jogos) {
+            return jogos.filter(jogo => {
+                // Bloqueia por tag
+                const tags = jogo.tags?.map(t => t.slug) ?? [];
+                if (tags.some(tag => TAGS_BLOQUEADAS.includes(tag))) return false;
+                // Bloqueia jogos sem avaliações suficientes (menos de 10 avaliações = obscuro demais)
+                if ((jogo.ratings_count ?? 0) < 10) return false;
+                return true;
+            });
+        }
+
+        // ── Em Alta ─────────────────────────────────────────────────────
+        async function carregarJogos(pagina) {
+            const response = await fetch(
+                `https://api.rawg.io/api/games?key=${API_KEY}&dates=2026-01-01,2026-05-24&ordering=-added&page_size=20&page=${pagina}&exclude_additions=true&exclude_tags=nsfw,adult,hentai,eroge`
+            );
+            const data = await response.json();
+            return data;
+        }
+
+        const listaJogos = carregarJogos(1);
+
         listaJogos.then(jogos => {
             const slider = document.getElementById('slider');
-
-            jogos.results.forEach(jogo => {
+            const jogosFiltrados = filtrarNSFW(jogos.results).slice(0, 15);
+            jogosFiltrados.forEach(jogo => {
                 const descricao = descricoes[jogo.name] ?? 'Em breve mais informações sobre este título.';
                 const slide = document.createElement('div');
                 slide.classList.add('swiper-slide');
                 slide.innerHTML = `
-                    <div class="d-flex flex-row align-items-stretch rounded-3 overflow-hidden shadow w-100 position-relative" style="background-color: #31054a; height: 400px;" onclick="window.location.href='produto.html?id=${jogo.id}'">
+                    <div class="d-flex flex-row align-items-stretch rounded-3 overflow-hidden shadow w-100 position-relative"
+                         style="background-color: #31054a; height: 400px;"
+                         onclick="window.location.href='produto.html?id=${jogo.id}'">
                         <div class="img-jogo flex-shrink-0" style="width: 100%; background-color: #d3d3d3;">
                             <img src="${jogo.background_image}" class="w-100 h-100" style="object-fit: cover;" alt="Imagem do jogo" />
                         </div>
-                        <div class="info-jogo d-flex flex-column text-white w-100 position-absolute bottom-0 start-0 end-0" style="background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); padding: 2rem 1rem 1rem; opacity: 0; transition: opacity 0.3s ease;">
+                        <div class="info-jogo d-flex flex-column text-white w-100 position-absolute bottom-0 start-0 end-0"
+                             style="background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); padding: 2rem 1rem 1rem; opacity: 0; transition: opacity 0.3s ease;">
                             <h2 class="m-0 fs-4 fw-bold">${jogo.name}</h2>
                             <p class="mt-2 mb-0 desc-limitada">${descricao}</p>
                         </div>
                     </div>
                 `;
-
                 slider.appendChild(slide);
             });
+            swiper.update();
         });
 
+        // ── Categorias de destaque ──────────────────────────────────────
+        const CATEGORIAS = [
+            { id: 'acao',       nome: '🔥 Jogos de Ação',         generoId: 4,  paginaAleatoria: Math.ceil(Math.random() * 5) },
+            { id: 'aventura',   nome: '🗺️ Jogos de Aventura',     generoId: 3,  paginaAleatoria: Math.ceil(Math.random() * 5) },
+            { id: 'rpg',        nome: '⚔️ RPG',                   generoId: 5,  paginaAleatoria: Math.ceil(Math.random() * 5) },
+            { id: 'estrategia', nome: '🧩 Puzzle & Estratégia',   generoId: 10, paginaAleatoria: Math.ceil(Math.random() * 5) },
+            { id: 'corrida',    nome: '🏎️ Corrida & Esportes',    generoId: 1,  paginaAleatoria: Math.ceil(Math.random() * 5) },
+        ];
 
-        swiper.update();
-
-        async function carregarLista(pagina) {
-
+        async function carregarCategoria(categoria) {
             const response = await fetch(
-                `https://api.rawg.io/api/games?key=${API_KEY}&dates=2026-01-01,2026-05-24&ordering=-added&page_size=24&page=${pagina}`
+                `https://api.rawg.io/api/games?key=${API_KEY}&genres=${categoria.generoId}&ordering=-rating&metacritic=60,100&page_size=10&page=${categoria.paginaAleatoria}&exclude_additions=true&exclude_tags=nsfw,adult,hentai,eroge`
             );
             const data = await response.json();
-
-            return data.results;
+            return filtrarNSFW(data.results ?? []).slice(0, 6);
         }
-        const listaJogos2 = carregarLista(1)
-        console.log(listaJogos2, "Lista de carregamento")
-        listaJogos2.then(jogos => {
 
-            console.log(jogos)
-            const categoria_jogos = document.getElementById('categoria_jogos')
-            jogos.forEach(jogo => {
-                const elemento = montaJogo(jogo.name, jogo.background_image, jogo.id)
-                categoria_jogos.innerHTML += elemento
-            })
-        })
-
-        function montaJogo(nome, imagem, id) {
+        function montaCardCategoria(jogo) {
+            const generos = jogo.genres?.map(g => g.name).join(', ') ?? '';
+            const capa = jogo.background_image ?? 'imagem-padrao.jpg';
             return `
-                            <div class="col-12 col-md-4" onclick="window.location.href='produto.html?id=${id}'">
-                    <div class="card-jogo d-flex flex-column rounded-3 h-100" id="hoverGta">
-                        <div class="img-jogo">
-                            <img src="${imagem}"
-                                class="w-100" style="height: 200px; object-fit: cover; " alt="Imagem do ${nome}">
-                        </div>
-
-                        <div class="info-jogo d-flex flex-column text-white" style="background-color: #230752;">
-                            <h5 class="card-title" style="margin: 1rem;">
-                                ${nome}
-                            </h5>
-                            
-
-                            <div class="mt-auto px-3 py-2 preco-jogo">
-                                <span class="fs-4 fw-bold">R$ ${Math.floor(Math.random() * (300 - 30) + 30)}</span>
+                <div class="categoria-card"">
+                    <div class="card-jogo d-flex flex-column rounded-3 h-100" style="overflow: hidden;">
+                        <img src="${capa}" style="height: 130px; object-fit: cover; width: 100%;" alt="${jogo.name}">
+                        <div class="d-flex flex-column text-white flex-grow-1" style="background-color: #230752; padding: 0.75rem;">
+                            <h6 class="mb-1" style="font-size: 0.85rem; line-height: 1.3;">${jogo.name}</h6>
+                            <p class="text-muted mb-2" style="font-size: 0.75rem;">${generos}</p>
+                            <div class="mt-auto d-flex align-items-center justify-content-between">
+                                <span class="fw-bold" style="font-size: 0.9rem;">R$ ${gerarPreco(jogo.id)}</span>
+                                <a href="produto.html?id=${jogo.id}" class="btn orbitmain btn-sm text-white"
+                                   style="font-size: 0.75rem; padding: 0.2rem 0.6rem; cursor: pointer;"
+                                   onclick="event.stopPropagation()">Ver</a>
                             </div>
                         </div>
                     </div>
                 </div>
-                        `
+            `;
         }
 
+        function montaSecao(categoria, jogos) {
+            const sliderId = `slider-${categoria.id}`;
+            const html = `
+                <section class="secao-categoria">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h3 class="mb-0">${categoria.nome}</h3>
+                        <div class="d-flex gap-2 align-items-center">
+                            <button class="btn-scroll" onclick="scrollCategoria('${sliderId}', -1)">
+                                <i class="bi bi-arrow-left-circle"></i>
+                            </button>
+                            <button class="btn-scroll" onclick="scrollCategoria('${sliderId}', 1)">
+                                <i class="bi bi-arrow-right-circle"></i>
+                            </button>
+                            <a href="catalogo.html" class="btn btn-sm btn-outline-light ms-2" style="font-size: 0.8rem;">
+                                Ver todos <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="categoria-slider" id="${sliderId}">
+                        ${jogos.map(j => montaCardCategoria(j)).join('')}
+                    </div>
+                </section>
+            `;
+            return html;
+        }
+
+        function scrollCategoria(sliderId, direcao) {
+            const el = document.getElementById(sliderId);
+            el.scrollBy({ left: direcao * 440, behavior: 'smooth' });
+        }
+
+        async function carregarTodasCategorias() {
+            const container = document.getElementById('secoes-categorias');
+            for (const categoria of CATEGORIAS) {
+                const jogos = await carregarCategoria(categoria);
+                if (jogos.length > 0) {
+                    container.innerHTML += montaSecao(categoria, jogos);
+                }
+            }
+        }
+
+        carregarTodasCategorias();
     </script>
 </body>
-
 </html>
