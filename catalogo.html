@@ -1,11 +1,10 @@
 <!doctype html>
-
 <html lang="pt-br" data-bs-theme="dark">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Orbit</title>
+    <title>Orbit — Catálogo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
@@ -18,6 +17,7 @@
             color: #230752;
         }
 
+        /* Paginação */
         .page-item.active .page-link {
             background-color: #6610f2;
             border-color: #6610f2;
@@ -31,6 +31,7 @@
             color: #4a0ab5;
         }
 
+        /* Cards */
         .card {
             transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
         }
@@ -41,9 +42,77 @@
             filter: brightness(1.1);
         }
 
-        .btn {
-            cursor: pointer;
+        /* Barra lateral */
+        #sidebar {
+            min-width: 220px;
+            max-width: 220px;
+            background-color: #1a1a2e;
+            border-radius: 10px;
+            padding: 1.2rem;
+            height: fit-content;
+        }
 
+        #sidebar h6 {
+            color: #6610f2;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
+            margin-top: 1rem;
+            border-bottom: 1px solid #6610f222;
+            padding-bottom: 0.3rem;
+        }
+
+        #sidebar h6:first-child {
+            margin-top: 0;
+        }
+
+        .form-check-label {
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .form-check-input:checked {
+            background-color: #6610f2;
+            border-color: #6610f2;
+        }
+
+        /* Preço range */
+        #precoRange::-webkit-slider-thumb {
+            background: #6610f2;
+        }
+
+        #precoRange {
+            accent-color: #6610f2;
+        }
+
+        .btn-filtrar {
+            background-color: #6610f2;
+            color: white;
+            border: none;
+            width: 100%;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .btn-filtrar:hover {
+            background-color: #4a0ab5;
+            color: white;
+        }
+
+        .btn-limpar {
+            background: transparent;
+            color: #aaa;
+            border: 1px solid #444;
+            width: 100%;
+            margin-top: 0.4rem;
+            font-size: 0.8rem;
+        }
+
+        .btn-limpar:hover {
+            color: white;
+            border-color: #888;
         }
     </style>
 </head>
@@ -57,22 +126,18 @@
         integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y"
         crossorigin="anonymous"></script>
 
-    <!--Barra de navegação-->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg orbitmain">
         <div class="container-xl">
-
             <a class="navbar-brand active" href="index.html">
                 <img src="./orbitlogo.png" alt="Logo" width="125" height="75" class="object-fit-cover" />
             </a>
-
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link text-light" href="biblioteca.html">Biblioteca</a>
@@ -81,72 +146,160 @@
                         <a class="nav-link active text-light" href="catalogo.html">Catálogo</a>
                     </li>
                 </ul>
-
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <a class="nav-link text-light" href="carrinho.html">
                         <img src="./carrinhoicon.png" alt="Carrinho" width="30" height="30" class="m-3" />
                     </a>
                 </div>
-
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="..." aria-label="Search" />
                     <button class="btn btn-outline-light" type="submit">Buscar</button>
                 </form>
-
             </div>
         </div>
     </nav>
 
-    <div class="container mt-4">
+    <div class="container-xl mt-4">
+        <div class="d-flex gap-4 align-items-start">
 
-        <!-- Cards dos jogos -->
-        <div class="row" id="catalogo">
-            <!-- Cards gerados pelo JS -->
+            <!-- Barra lateral de filtros -->
+            <div id="sidebar">
+
+                <h6>Plataforma</h6>
+                <div class="form-check"><input class="form-check-input" type="checkbox" value="4" id="pc"><label
+                        class="form-check-label" for="pc">PC</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" value="187" id="ps5"><label
+                        class="form-check-label" for="ps5">PlayStation 5</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" value="18" id="ps4"><label
+                        class="form-check-label" for="ps4">PlayStation 4</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" value="1" id="xbox"><label
+                        class="form-check-label" for="xbox">Xbox</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" value="7" id="switch"><label
+                        class="form-check-label" for="switch">Nintendo Switch</label></div>
+
+                <h6>Gênero</h6>
+                <div class="form-check"><input class="form-check-input" type="checkbox" value="4" id="acao"><label
+                        class="form-check-label" for="acao">Ação</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" value="3" id="aventura"><label
+                        class="form-check-label" for="aventura">Aventura</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" value="5" id="rpg"><label
+                        class="form-check-label" for="rpg">RPG</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" value="2" id="tiro"><label
+                        class="form-check-label" for="tiro">Tiro</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" value="10"
+                        id="estrategia"><label class="form-check-label" for="estrategia">Estratégia</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" value="11" id="arcade"><label
+                        class="form-check-label" for="arcade">Arcade</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" value="83"
+                        id="plataforma"><label class="form-check-label" for="plataforma">Plataforma</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" value="7" id="puzzle"><label
+                        class="form-check-label" for="puzzle">Puzzle</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" value="14" id="simulacao"><label
+                        class="form-check-label" for="simulacao">Simulação</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" value="17" id="corrida"><label
+                        class="form-check-label" for="corrida">Corrida</label></div>
+
+                <h6>Nº de Players</h6>
+                <div class="form-check"><input class="form-check-input" type="checkbox" value="single-player"
+                        id="single"><label class="form-check-label" for="single">Single Player</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" value="multiplayer"
+                        id="multi"><label class="form-check-label" for="multi">Multiplayer Online</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" value="local-multiplayer"
+                        id="local"><label class="form-check-label" for="local">Multiplayer Local</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" value="co-op" id="coop"><label
+                        class="form-check-label" for="coop">Co-op</label></div>
+
+                <h6>Preço máximo</h6>
+                <input type="range" class="form-range" id="precoRange" min="20" max="300" value="300" step="10">
+                <div class="text-center" style="font-size: 0.85rem;">Até R$ <span id="precoValor">300</span></div>
+
+                <button class="btn btn-filtrar" onclick="aplicarFiltros()">Filtrar</button>
+                <button class="btn btn-limpar" onclick="limparFiltros()">Limpar filtros</button>
+            </div>
+
+            <!-- Conteúdo principal -->
+            <div class="flex-grow-1">
+                <div class="row" id="catalogo">
+                    <!-- Cards gerados pelo JS -->
+                </div>
+                <nav class="mt-4 mb-5" aria-label="Paginação do catálogo">
+                    <ul class="pagination justify-content-center" id="paginacao"></ul>
+                </nav>
+            </div>
+
         </div>
-
-        <!-- Paginação -->
-        <nav class="mt-4 mb-5" aria-label="Paginação do catálogo">
-            <ul class="pagination justify-content-center" id="paginacao">
-                <!-- Botões gerados pelo JS -->
-            </ul>
-        </nav>
-
     </div>
 
     <script>
         const API_KEY = 'c3c539ca3bd243f5939861bf749e43e7';
         const JOGOS_POR_PAGINA = 20;
+        const TAGS_BLOQUEADAS = ['nsfw', 'adult', 'hentai', 'eroge', 'sexual-content', 'nudity', 'explicit'];
 
         let paginaAtual = 1;
         let totalPaginas = 1;
+        let precoMaximo = 300;
+
+        // Atualiza label do range de preço
+        document.getElementById('precoRange').addEventListener('input', function () {
+            precoMaximo = this.value;
+            document.getElementById('precoValor').textContent = this.value;
+        });
+
+        function getCheckedValues(name) {
+            return [...document.querySelectorAll(`#sidebar input[type=checkbox][value="${name}"]`)]
+                .filter(el => el.checked)
+                .map(el => el.value);
+        }
+
+        function getAllChecked(groupIds) {
+            return groupIds
+                .map(id => document.getElementById(id))
+                .filter(el => el && el.checked)
+                .map(el => el.value);
+        }
+
+        function aplicarFiltros() {
+            paginaAtual = 1;
+            carregarJogos(1);
+        }
+
+        function limparFiltros() {
+            document.querySelectorAll('#sidebar input[type=checkbox]').forEach(el => el.checked = false);
+            document.getElementById('precoRange').value = 300;
+            document.getElementById('precoValor').textContent = '300';
+            precoMaximo = 300;
+            paginaAtual = 1;
+            carregarJogos(1);
+        }
 
         async function carregarJogos(pagina) {
-            // Limpa o catálogo antes de carregar a nova página
-            document.getElementById('catalogo').innerHTML = '<p class="text-center">Carregando...</p>';
+            document.getElementById('catalogo').innerHTML = '<p class="text-center w-100 mt-4">Carregando...</p>';
 
-            const response = await fetch(
-                `https://api.rawg.io/api/games?key=${API_KEY}&metacritic=85,100&ordering=-ratingpage_size=${JOGOS_POR_PAGINA}&page=${pagina}`
-            );
+            // Monta os parâmetros de filtro
+            const plataformas = getAllChecked(['pc', 'ps5', 'ps4', 'xbox', 'switch']);
+            const generos = getAllChecked(['acao', 'aventura', 'rpg', 'tiro', 'estrategia', 'arcade', 'plataforma', 'puzzle', 'simulacao', 'corrida']);
+            const players = getAllChecked(['single', 'multi', 'local', 'coop']);
+
+            let url = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-metacritic&metacritic=70,100&page_size=${JOGOS_POR_PAGINA}&page=${pagina}&exclude_additions=true&exclude_tags=nsfw,adult,hentai,eroge`;
+
+            if (plataformas.length) url += `&platforms=${plataformas.join(',')}`;
+            if (generos.length) url += `&genres=${generos.join(',')}`;
+            if (players.length) url += `&tags=${players.join(',')}`;
+
+            const response = await fetch(url);
             const data = await response.json();
 
-            // Calcula o total de páginas (a RAWG retorna o total de jogos em data.count)
             totalPaginas = Math.ceil(data.count / JOGOS_POR_PAGINA);
 
             renderizarJogos(data.results);
             renderizarPaginacao();
-
-            // Volta pro topo da página ao trocar de página
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-
-        // Tags que devem ser bloqueadas
-        const TAGS_BLOQUEADAS = ['nsfw', 'adult', 'hentai', 'eroge', 'sexual content'];
 
         function renderizarJogos(jogos) {
             const container = document.getElementById('catalogo');
             container.innerHTML = '';
 
-            // Filtra jogos com tags bloqueadas antes de renderizar
             const jogosFiltrados = jogos.filter(jogo => {
                 const tags = jogo.tags?.map(t => t.slug) ?? [];
                 return !tags.some(tag => TAGS_BLOQUEADAS.includes(tag));
@@ -154,70 +307,73 @@
 
             jogosFiltrados.forEach(jogo => {
                 const capa = jogo.background_image ?? 'imagem-padrao.jpg';
-                const preco = (Math.random() * 150 + 20).toFixed(2);
+
+                // Gera preço fixo por jogo (baseado no id pra não mudar ao paginar)
+                const preco = gerarPreco(jogo.id);
+
+                // Filtra pelo preço máximo escolhido
+                if (parseFloat(preco) > parseFloat(precoMaximo)) return;
 
                 container.innerHTML += `
-            <div class="col-md-3 mb-4">
-                <div class="card h-100">
-                    <img src="${capa}" class="card-img-top" alt="${jogo.name}">
-                    <div class="card-body" style="background-color: #230752;">
-                        <h5 class="card-title">${jogo.name}</h5>
-                        <p class="text-muted">${jogo.genres?.map(g => g.name).join(', ') ?? ''}</p>
-                        <p class="fw-bold">R$ ${preco}</p>
-                        <a href="produto.html?id=${jogo.id}" class="btn orbitmain">Ver jogo</a>
+                    <div class="col-md-4 col-lg-3 mb-4">
+                        <div class="card h-100">
+                            <img src="${capa}" class="card-img-top" alt="${jogo.name}" style="height: 160px; object-fit: cover;">
+                            <div class="card-body" style="background-color: #230752;">
+                                <h5 class="card-title" style="font-size: 0.95rem;">${jogo.name}</h5>
+                                <p class="text-muted" style="font-size: 0.8rem;">${jogo.genres?.map(g => g.name).join(', ') ?? ''}</p>
+                                <p class="fw-bold mb-2">R$ ${preco}</p>
+                                <a href="produto.html?id=${jogo.id}" class="btn orbitmain text-white btn-sm">Ver jogo</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        `;
+                `;
             });
+
+            if (container.innerHTML === '') {
+                container.innerHTML = '<p class="text-center w-100 mt-4">Nenhum jogo encontrado com esses filtros.</p>';
+            }
+        }
+
+        function gerarPreco(id) {
+            // Usa o id do jogo como semente — sempre gera o mesmo número para o mesmo jogo
+            const semente = id * 9301 + 49297;
+            const pseudo = (semente % 233280) / 233280;
+            return (pseudo * 280 + 20).toFixed(2);
         }
 
         function renderizarPaginacao() {
             const paginacao = document.getElementById('paginacao');
             paginacao.innerHTML = '';
 
-            // Botão "Anterior"
             paginacao.innerHTML += `
                 <li class="page-item ${paginaAtual === 1 ? 'disabled' : ''}">
                     <a class="page-link" href="#" onclick="trocarPagina(${paginaAtual - 1})">Anterior</a>
-                </li>
-            `;
+                </li>`;
 
-            // Gera até 5 botões de página ao redor da página atual
             const inicio = Math.max(1, paginaAtual - 2);
             const fim = Math.min(totalPaginas, paginaAtual + 2);
 
-            // Mostra "1 ..." se a janela não começa na página 1
             if (inicio > 1) {
                 paginacao.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="trocarPagina(1)">1</a></li>`;
-                if (inicio > 2) {
-                    paginacao.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
-                }
+                if (inicio > 2) paginacao.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
             }
 
-            // Páginas da janela
             for (let i = inicio; i <= fim; i++) {
                 paginacao.innerHTML += `
                     <li class="page-item ${i === paginaAtual ? 'active' : ''}">
                         <a class="page-link" href="#" onclick="trocarPagina(${i})">${i}</a>
-                    </li>
-                `;
+                    </li>`;
             }
 
-            // Mostra "... última" se a janela não termina na última página
             if (fim < totalPaginas) {
-                if (fim < totalPaginas - 1) {
-                    paginacao.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
-                }
+                if (fim < totalPaginas - 1) paginacao.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
                 paginacao.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="trocarPagina(${totalPaginas})">${totalPaginas}</a></li>`;
             }
 
-            // Botão "Próximo"
             paginacao.innerHTML += `
                 <li class="page-item ${paginaAtual === totalPaginas ? 'disabled' : ''}">
                     <a class="page-link" href="#" onclick="trocarPagina(${paginaAtual + 1})">Próximo</a>
-                </li>
-            `;
+                </li>`;
         }
 
         function trocarPagina(pagina) {
@@ -226,8 +382,7 @@
             carregarJogos(paginaAtual);
         }
 
-        // Carrega a primeira página ao abrir
-        carregarJogos(paginaAtual);
+        carregarJogos(1);
     </script>
 
 </body>
