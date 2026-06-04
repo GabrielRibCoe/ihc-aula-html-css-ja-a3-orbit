@@ -39,7 +39,8 @@
     <nav class="navbar navbar-expand-lg orbitmain">
         <div class="container-xl">
 
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand" href="index.html" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                title="Página Inicial">
                 <img src="./orbitlogo.png" alt="Logo" width="125" height="75" class="object-fit-cover" />
             </a>
 
@@ -97,6 +98,11 @@
         </div>
     </div>
 
+    <div class="container-xl mb-5">    
+        <hr>
+        <p class="text-center text-muted">© 2026 Orbit. Todos os direitos reservados.</p>
+    </div>
+
     <!-- Script DEPOIS do HTML -->
     <script>
         const API_KEY = 'c3c539ca3bd243f5939861bf749e43e7';
@@ -129,6 +135,11 @@
             .catch(() => {
                 document.getElementById('nome').textContent = 'Jogo não encontrado.';
             });
+
+        // Ativa todos os tooltips da página
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+            new bootstrap.Tooltip(el);
+        });
     </script>
 
 </body>
