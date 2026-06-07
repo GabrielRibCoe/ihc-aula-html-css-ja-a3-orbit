@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
+        body {
+            background-image: linear-gradient(to right, #141425, #1f1c3e);
+        }
+    
         .orbitmain {
             background-color: #6610f2;
         }
@@ -59,7 +63,7 @@
             top: 0;
             bottom: 0;
             width: 300px;
-            background: linear-gradient(to left, transparent, #212529);
+            background: linear-gradient(to left, transparent, #141425);
             pointer-events: none;
             z-index: 5;
         }
@@ -71,7 +75,7 @@
             top: 0;
             bottom: 0;
             width: 300px;
-            background: linear-gradient(to right, transparent, #212529);
+            background: linear-gradient(to right, transparent, #1f1c3e);
             pointer-events: none;
             z-index: 5;
         }
@@ -141,8 +145,8 @@
         }
 
         .categoria-card {
-            min-width: 200px;
-            max-width: 200px;
+            min-width: 300px;
+            max-width: 300px;
             scroll-snap-align: start;
             flex-shrink: 0;
         }
@@ -205,7 +209,7 @@
                     </a>
                 </div>
                 <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="..." aria-label="Search" />
+                    <input class="form-control me-2" type="search" placeholder="..." aria-label="Search" style="background-color: #1f1c3e;" />
                     <button class="btn btn-outline-light" type="submit">Buscar</button>
                 </form>
             </div>
@@ -338,9 +342,9 @@
         const CATEGORIAS = [
             { id: 'acao', nome: '🔥 Jogos de Ação', generoId: 4, paginaAleatoria: Math.ceil(Math.random() * 5) },
             { id: 'aventura', nome: '🗺️ Jogos de Aventura', generoId: 3, paginaAleatoria: Math.ceil(Math.random() * 5) },
-            { id: 'rpg', nome: '⚔️ RPG', generoId: 5, paginaAleatoria: Math.ceil(Math.random() * 5) },
-            { id: 'estrategia', nome: '🧩 Puzzle & Estratégia', generoId: 10, paginaAleatoria: Math.ceil(Math.random() * 5) },
-            { id: 'corrida', nome: '🏎️ Corrida & Esportes', generoId: 1, paginaAleatoria: Math.ceil(Math.random() * 5) },
+            { id: 'rpg', nome: '⚔️ Jogos de RPG', generoId: 5, paginaAleatoria: Math.ceil(Math.random() * 5) },
+            { id: 'estrategia', nome: '🧩 Jogos de Puzzle & Estratégia', generoId: 10, paginaAleatoria: Math.ceil(Math.random() * 5) },
+            { id: 'corrida', nome: '🏎️ Jogos de Corrida & Esportes', generoId: 1, paginaAleatoria: Math.ceil(Math.random() * 5) },
         ];
 
         async function carregarCategoria(categoria) {
@@ -355,9 +359,9 @@
             const generos = jogo.genres?.map(g => g.name).join(', ') ?? '';
             const capa = jogo.background_image ?? 'imagem-padrao.jpg';
             return `
-                <div class="categoria-card"">
-                    <div class="card-jogo d-flex flex-column rounded-3 h-100" style="overflow: hidden;">
-                        <img src="${capa}" style="height: 150px; object-fit: cover; width: 100%;" alt="${jogo.name}">
+                <div class="categoria-card">
+                    <div class="card-jogo d-flex flex-column rounded-3 h-100 w-100" style="overflow: visible;">
+                        <img src="${capa}" style="height: 200px; object-fit: cover; width: 100%;" alt="${jogo.name}">
                         <div class="d-flex flex-column text-white flex-grow-1" style="background-color: #230752; padding: 0.75rem;">
                             <h6 class="mb-1" style="font-size: 0.85rem; line-height: 1.3;">${jogo.name}</h6>
                             <p class="text-muted mb-2" style="font-size: 0.75rem;">${generos}</p>
@@ -365,7 +369,7 @@
                                 <span class="fw-bold" style="font-size: 0.9rem;">R$ ${gerarPreco(jogo.id)}</span>
                                 <a href="produto.html?id=${jogo.id}" class="btn orbitmain btn-sm text-white"
                                    style="font-size: 0.75rem; padding: 0.2rem 0.6rem; cursor: pointer;"
-                                   onclick="event.stopPropagation()">Ver</a>
+                                   onclick="event.stopPropagation()">Ver jogo</a>
                             </div>
                         </div>
                     </div>
