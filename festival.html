@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-bs-theme="dark">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Festival de Promoções — Orbit</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <style>
+        body {
+            background-image: linear-gradient(to right, #141425, #1f1c3e);
+        }
+
+        .orbitmain {
+            background-color: #6610f2;
+        }
+
+        .orbitdark {
+            color: #230752;
+        }
+
+        /* Hero banner */
+        .festival-hero {
+            position: relative;
+            overflow: hidden;
+            height: 260px;
+        }
+
+        .festival-hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.4);
+        }
+
+        .festival-hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        /* Cards */
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(102, 16, 242, 0.5);
+            filter: brightness(1.1);
+        }
+
+        /* Paginação */
+        .page-item.active .page-link {
+            background-color: #6610f2;
+            border-color: #6610f2;
+        }
+
+        .page-link {
+            color: #6610f2;
+        }
+
+        .page-link:hover {
+            color: #4a0ab5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"
+        integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y"
+        crossorigin="anonymous"></script>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg orbitmain">
+        <div class="container-xl">
+            <a class="navbar-brand" href="index.html" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                title="Página Inicial">
+                <img src="./orbitlogo.png" alt="Logo" width="125" height="75" class="object-fit-cover" />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="biblioteca.html">Biblioteca</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="catalogo.html">Catálogo</a>
+                    </li>
+                </ul>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a class="nav-link text-light" href="carrinho.html">
+                        <img src="./carrinhoicon.png" alt="Carrinho" width="30" height="30" class="m-3" />
+                    </a>
+                </div>
+                <form class="d-flex" role="search" onsubmit="buscar(event)">
+                    <input class="form-control me-2" type="search" id="campoBusca" placeholder="Buscar jogos..." aria-label="Search" style="background-color: #1f1c3e;" />
+                    <button class="btn btn-outline-light" type="submit">Buscar</button>
+                </form>
+
+                <!-- Login -->
+                <div class="ms-3 d-flex align-items-center" id="areaLogin">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Modal de cadastro -->
+    <div class="modal fade" id="modalLogin" tabindex="-1" aria-labelledby="modalLoginLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: #1a1a2e; border: 1px solid #6610f2;">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-white" id="modalLoginLabel">Criar conta</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label text-light">Nome de usuário</label>
+                        <input type="text" class="form-control" id="inputUsuario" placeholder="Seu nome de usuário"
+                            style="background-color: #0d0d1a; border-color: #6610f2; color: white;">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-light">Email</label>
+                        <input type="email" class="form-control" id="inputEmail" placeholder="seu@email.com"
+                            style="background-color: #0d0d1a; border-color: #6610f2; color: white;">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-light">Senha</label>
+                        <input type="password" class="form-control" id="inputSenha" placeholder="••••••••"
+                            style="background-color: #0d0d1a; border-color: #6610f2; color: white;">
+                    </div>
+                    <p id="erroLogin" class="text-danger" style="font-size: 0.85rem; display: none;"></p>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn w-100 text-white fw-bold" style="background-color: #6610f2;"
+                        onclick="criarConta()">Criar conta</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero banner -->
+    <div class="festival-hero">
+        <img src="./festivalImg.jpg" alt="Festival de Promoções">
+        <div class="festival-hero-content text-white">
+            <h1 class="fw-bold mb-1" style="font-size: 2.2rem; text-shadow: 0 2px 8px rgba(0,0,0,0.9);">
+                🎉 Festival de Promoções da <span style="color: #a855f7;">A3</span>
+            </h1>
+            <p class="mb-3" style="font-size: 1.15rem; text-shadow: 0 2px 6px rgba(0,0,0,0.9);">
+                Jogos com até 60% de desconto, venha conferir!
+            </p>
+            <span class="badge px-4 py-2" style="background-color: #6610f2; font-size: 1rem; border-radius: 30px;">
+                🔥 Ofertas por tempo limitado
+            </span>
+        </div>
+    </div>
+
+    <!-- Jogos em promoção -->
+    <div class="container-xl mt-5">
+        <h3 class="mb-4">Jogos em promoção</h3>
+        <div class="row" id="jogos-festival">
+            <p class="text-center w-100 mt-4">Carregando promoções...</p>
+        </div>
+        <nav class="mt-4 mb-5" aria-label="Paginação">
+            <ul class="pagination justify-content-center" id="paginacao"></ul>
+        </nav>
+    </div>
+
+    <div class="container-xl mb-5">
+        <hr>
+        <p class="text-center text-muted">© 2026 Orbit. Todos os direitos reservados.</p>
+    </div>
+
+    <script>
+        const API_KEY = 'c3c539ca3bd243f5939861bf749e43e7';
+        const JOGOS_POR_PAGINA = 40; // Busca mais para ter chance de filtrar os em promoção
+        const TAGS_BLOQUEADAS = ['nsfw', 'adult', 'hentai', 'eroge', 'sexual-content', 'nudity', 'explicit'];
+
+        let paginaAtual = 1;
+        let totalPaginas = 1;
+
+        function gerarPreco(id) {
+            const semente = id * 9301 + 49297;
+            const pseudo = (semente % 233280) / 233280;
+            return (pseudo * 280 + 20).toFixed(2);
+        }
+
+        function gerarPromocao(id) {
+            const emPromocao = (id % 4 === 0);
+            const precoOriginal = parseFloat(gerarPreco(id));
+            if (!emPromocao) return { emPromocao: false, precoOriginal, precoAtual: precoOriginal, desconto: 0 };
+            const descontoSemente = (id * 1234567) % 100;
+            const desconto = 10 + (descontoSemente % 51);
+            const precoAtual = (precoOriginal * (1 - desconto / 100)).toFixed(2);
+            return { emPromocao: true, precoOriginal: precoOriginal.toFixed(2), precoAtual, desconto };
+        }
+
+        async function carregarJogos(pagina) {
+            document.getElementById('jogos-festival').innerHTML = '<p class="text-center w-100 mt-4">Carregando promoções...</p>';
+
+            const response = await fetch(
+                `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-metacritic&metacritic=70,100&page_size=${JOGOS_POR_PAGINA}&page=${pagina}&exclude_additions=true&exclude_tags=nsfw,adult,hentai,eroge`
+            );
+            const data = await response.json();
+            totalPaginas = Math.ceil(data.count / JOGOS_POR_PAGINA);
+
+            // Filtra apenas os que estão em promoção e sem tags bloqueadas
+            const jogosPromocao = data.results.filter(jogo => {
+                const tags = jogo.tags?.map(t => t.slug) ?? [];
+                if (tags.some(tag => TAGS_BLOQUEADAS.includes(tag))) return false;
+                return gerarPromocao(jogo.id).emPromocao;
+            });
+
+            renderizarJogos(jogosPromocao);
+            renderizarPaginacao();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderizarJogos(jogos) {
+            const container = document.getElementById('jogos-festival');
+            container.innerHTML = '';
+
+            if (jogos.length === 0) {
+                container.innerHTML = '<p class="text-center w-100 mt-4">Nenhuma promoção encontrada nesta página.</p>';
+                return;
+            }
+
+            jogos.forEach(jogo => {
+                const capa = jogo.background_image ?? 'imagem-padrao.jpg';
+                const promo = gerarPromocao(jogo.id);
+
+                container.innerHTML += `
+                    <div class="col-md-4 col-lg-3 mb-4">
+                        <div class="card h-100 position-relative">
+                            <span class="badge position-absolute top-0 end-0 m-2 text-white"
+                                  style="background-color:#6610f2; z-index:1; font-size: 0.8rem;">
+                                -${promo.desconto}% OFF
+                            </span>
+                            <img src="${capa}" class="card-img-top" alt="${jogo.name}" style="height: 160px; object-fit: cover;">
+                            <div class="card-body" style="background-color: #230752;">
+                                <h5 class="card-title" style="font-size: 0.95rem;">${jogo.name}</h5>
+                                <p class="text-muted" style="font-size: 0.8rem;">${jogo.genres?.map(g => g.name).join(', ') ?? ''}</p>
+                                <div class="mb-3">
+                                    <div class="d-flex align-items-center gap-2 mb-1">
+                                        <span class="text-muted text-decoration-line-through" style="font-size:0.85rem;">R$ ${promo.precoOriginal}</span>
+                                    </div>
+                                    <span class="fw-bold text-warning" style="font-size: 1.1rem;">R$ ${promo.precoAtual}</span>
+                                </div>
+                                <a href="produto.html?id=${jogo.id}" class="btn orbitmain text-white btn-sm">Ver jogo</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderizarPaginacao() {
+            const paginacao = document.getElementById('paginacao');
+            paginacao.innerHTML = '';
+
+            paginacao.innerHTML += `
+                <li class="page-item ${paginaAtual === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="trocarPagina(${paginaAtual - 1})">Anterior</a>
+                </li>`;
+
+            const inicio = Math.max(1, paginaAtual - 2);
+            const fim = Math.min(totalPaginas, paginaAtual + 2);
+
+            if (inicio > 1) {
+                paginacao.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="trocarPagina(1)">1</a></li>`;
+                if (inicio > 2) paginacao.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+            }
+
+            for (let i = inicio; i <= fim; i++) {
+                paginacao.innerHTML += `
+                    <li class="page-item ${i === paginaAtual ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="trocarPagina(${i})">${i}</a>
+                    </li>`;
+            }
+
+            if (fim < totalPaginas) {
+                if (fim < totalPaginas - 1) paginacao.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                paginacao.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="trocarPagina(${totalPaginas})">${totalPaginas}</a></li>`;
+            }
+
+            paginacao.innerHTML += `
+                <li class="page-item ${paginaAtual === totalPaginas ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="trocarPagina(${paginaAtual + 1})">Próximo</a>
+                </li>`;
+        }
+
+        function trocarPagina(pagina) {
+            if (pagina < 1 || pagina > totalPaginas) return;
+            paginaAtual = pagina;
+            carregarJogos(paginaAtual);
+        }
+
+        // Ativa tooltips
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+            new bootstrap.Tooltip(el);
+        });
+
+        carregarJogos(1);
+
+        // ── Sistema de login ──────────────────────────────────────
+        function atualizarAreaLogin() {
+            const usuario = localStorage.getItem('orbitUsuario');
+            const area = document.getElementById('areaLogin');
+
+            if (usuario) {
+                area.innerHTML = `
+            <div class="dropdown">
+                <span class="text-white fw-bold dropdown-toggle" style="cursor:pointer; font-size:0.95rem;"
+                      data-bs-toggle="dropdown">
+                    👤 ${usuario}
+                </span>
+                <ul class="dropdown-menu dropdown-menu-end" style="background-color:#1a1a2e; border-color:#6610f2;">
+                    <li>
+                        <button class="dropdown-item text-danger" onclick="sairConta()">Sair</button>
+                    </li>
+                </ul>
+            </div>
+        `;
+            } else {
+                area.innerHTML = `
+            <img src="./LoginIcon.png" alt="Login" width="36" height="36"
+                 style="cursor:pointer;"
+                 data-bs-toggle="modal" data-bs-target="#modalLogin"
+                 title="Criar conta / Entrar">
+        `;
+            }
+        }
+
+        function criarConta() {
+            const usuario = document.getElementById('inputUsuario').value.trim();
+            const email = document.getElementById('inputEmail').value.trim();
+            const senha = document.getElementById('inputSenha').value;
+            const erro = document.getElementById('erroLogin');
+
+            if (!usuario || !email || !senha) {
+                erro.textContent = 'Por favor, preencha todos os campos.';
+                erro.style.display = 'block';
+                return;
+            }
+
+            if (senha.length < 6) {
+                erro.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+                erro.style.display = 'block';
+                return;
+            }
+
+            localStorage.setItem('orbitUsuario', usuario);
+            localStorage.setItem('orbitEmail', email);
+
+            bootstrap.Modal.getInstance(document.getElementById('modalLogin')).hide();
+            atualizarAreaLogin();
+
+            document.getElementById('inputUsuario').value = '';
+            document.getElementById('inputEmail').value = '';
+            document.getElementById('inputSenha').value = '';
+            erro.style.display = 'none';
+        }
+
+        function sairConta() {
+            localStorage.removeItem('orbitUsuario');
+            localStorage.removeItem('orbitEmail');
+            atualizarAreaLogin();
+        }
+
+        atualizarAreaLogin();
+
+        // ── Busca ────────────────────────────────────────────────
+        function buscar(event) {
+            event.preventDefault();
+            const termo = document.getElementById('campoBusca').value.trim();
+            if (termo) {
+                window.location.href = `resultado.html?q=${encodeURIComponent(termo)}`;
+            }
+        }
+    </script>
+
+</body>
+
+</html>
