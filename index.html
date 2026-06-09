@@ -2,6 +2,7 @@
 <html lang="pt-br" data-bs-theme="dark">
 
 <head>
+    <!-- Meta tags, título e links para CSS (Bootstrap, Swiper, ícones) -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Orbit</title>
@@ -174,6 +175,7 @@
 
 <body>
 
+    <!-- Scripts do Bootstrap, Swiper e código customizado -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>
@@ -185,17 +187,23 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg orbitmain">
         <div class="container-xl">
+
+            <!-- Logo clicável, redireciona para a página inicial-->
             <a class="navbar-brand active" href="index.html" data-bs-toggle="tooltip" data-bs-placement="bottom"
                 title="Página Inicial">
                 <img src=" ./orbitlogo.png" alt="Logo" width="125" height="75" class="object-fit-cover" />
             </a>
+
+            <!-- Botão para expandir menu em telas menores-->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!-- Links para biblioteca e catalago-->
                     <li class="nav-item">
                         <a class="nav-link text-light" href="biblioteca.html">Biblioteca</a>
                     </li>
@@ -203,22 +211,91 @@
                         <a class="nav-link text-light" href="catalogo.html">Catálogo</a>
                     </li>
                 </ul>
+
+                <!-- Ícone do carrinho, redireciona para a página do carrinho -->
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <a class="nav-link text-light" href="carrinho.html">
                         <img src="./carrinhoicon.png" alt="Carrinho" width="30" height="30" class="m-3" />
                     </a>
                 </div>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="..." aria-label="Search" style="background-color: #1f1c3e;" />
+
+                <!-- Campo de busca-->
+                <form class="d-flex" role="search" onsubmit="buscar(event)">
+                    <input class="form-control me-2" type="search" id="campoBusca" placeholder="Buscar jogos..." aria-label="Search" style="background-color: #1f1c3e;" />
                     <button class="btn btn-outline-light" type="submit">Buscar</button>
                 </form>
+
+                <!-- Login -->
+                <div class="ms-3 d-flex align-items-center" id="areaLogin">
+                    <!-- Preenchido pelo JS: ícone ou nome do usuário -->
+                </div>
+
             </div>
         </div>
     </nav>
 
+    <!-- Modal de cadastro -->
+    <div class="modal fade" id="modalLogin" tabindex="-1" aria-labelledby="modalLoginLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: #1a1a2e; border: 1px solid #6610f2;">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-white" id="modalLoginLabel">Criar conta</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+
+                        <!-- Campos para nome de usuário, email e senha -->
+                        <label class="form-label text-light">Nome de usuário</label>
+                        <input type="text" class="form-control" id="inputUsuario" placeholder="Seu nome de usuário"
+                               style="background-color: #0d0d1a; border-color: #6610f2; color: white;">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-light">Email</label>
+                        <input type="email" class="form-control" id="inputEmail" placeholder="seu@email.com"
+                               style="background-color: #0d0d1a; border-color: #6610f2; color: white;">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-light">Senha</label>
+                        <input type="password" class="form-control" id="inputSenha" placeholder="••••••••"
+                               style="background-color: #0d0d1a; border-color: #6610f2; color: white;">
+                    </div>
+                    <p id="erroLogin" class="text-danger" style="font-size: 0.85rem; display: none;"></p>
+                </div>
+
+                <!-- Botão de criação de conta -->
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn w-100 text-white fw-bold" style="background-color: #6610f2;"
+                            onclick="criarConta()">Criar conta</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <div class="d-flex flex-column align-items-stretch mt-5 mb-5">
 
-        <!-- Seção Em Alta (código original do seu amigo, sem alterações) -->
+        <!-- Banner Festival de Promoções -->
+        <div class="container-xl mb-5">
+            <a href="festival.html" style="display: block; text-decoration: none;">
+                <div class="position-relative rounded-3 overflow-hidden" style="cursor: pointer;">
+                    <img src="./festivalImg.jpg" alt="Festival de Promoções" class="w-100" style="height: 220px; object-fit: cover; filter: brightness(0.5);">
+                    <div class="position-absolute top-50 start-50 translate-middle text-center text-white px-4">
+                        <h2 class="fw-bold mb-1" style="font-size: 2rem; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">
+                            🎉 Festival de Promoções da <span style="color: #a855f7;">A3</span>
+                        </h2>
+                        <p class="mb-2" style="font-size: 1.1rem; text-shadow: 0 2px 6px rgba(0,0,0,0.8);">
+                            Jogos com até 60% de desconto, venha conferir!
+                        </p>
+                        <span class="btn text-white fw-bold px-4 py-2" style="background-color: #6610f2; border-radius: 30px; font-size: 0.95rem;">
+                            Ver ofertas →
+                        </span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Seção Em Alta -->
         <section class="mt-2 mb-5 flex-shrink-0">
             <div class="container-xl d-flex flex-row align-items-center justify-content-between mb-3">
                 <h1>Em alta</h1>
@@ -234,10 +311,13 @@
         </section>
 
         <!-- Seções de categorias geradas pelo JS -->
-        <div class="container-xl" id="secoes-categorias"></div>
+        <div class="container-xl" id="secoes-categorias">
+            <!-- Preenchido dinamicamente pelo JS -->
+        </div>
 
     </div>
 
+    <!-- Rodapé -->
     <div class="container-xl mb-5">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item text-muted text-center">
@@ -248,6 +328,8 @@
         <hr>
         <p class="text-center text-muted">© 2026 Orbit. Todos os direitos reservados.</p>
     </div>
+
+    
     <script>
         // ── Swiper Em Alta ──────────────────────────────────────────────
         const swiper = new Swiper('.mySwiper', {
@@ -262,15 +344,50 @@
         const API_KEY = 'c3c539ca3bd243f5939861bf749e43e7';
 
         // ── Utilitários ─────────────────────────────────────────────────
+
+        // Gerador de preço determinístico baseado no ID do jogo (para simular preços reais sem precisar de uma API de preços)
         function gerarPreco(id) {
             const semente = id * 9301 + 49297;
             const pseudo = (semente % 233280) / 233280;
             return (pseudo * 280 + 20).toFixed(2);
         }
 
+        // Retorna { emPromocao, precoOriginal, precoAtual, desconto }
+        function gerarPromocao(id) {
+            // ~1 em cada 4 jogos entra em promoção (quando id % 4 === 0), para assim escolher 1/4 dos jogos
+            const emPromocao = (id % 4 === 0);
+            const precoOriginal = parseFloat(gerarPreco(id));
+
+            if (!emPromocao) return { emPromocao: false, precoOriginal, precoAtual: precoOriginal, desconto: 0 };
+
+            // Desconto determinístico entre 10% e 60%
+            const descontoSemente = (id * 1234567) % 100;
+            const desconto = 10 + (descontoSemente % 51); // 10 a 60
+            const precoAtual = (precoOriginal * (1 - desconto / 100)).toFixed(2);
+
+            return { emPromocao: true, precoOriginal: precoOriginal.toFixed(2), precoAtual, desconto };
+        }
+
+        // Implementa o preço do jogo, caso o jogo não esteja em promoção, mostra o preço normal, caso contrário, mostra o preço original riscado, o preço com desconto e a porcentagem de desconto. Tudo isso usando a função gerarPromocao(id) para obter os dados de preço e promoção.
+        function montaPreco(id) {
+            const promo = gerarPromocao(id);
+            if (!promo.emPromocao) {
+                return `<span class="fw-bold" style="font-size: 0.9rem;">R$ ${promo.precoOriginal}</span>`;
+            }
+            return `
+                <div class="d-flex flex-column gap-0">
+                    <div class="d-flex align-items-center gap-1">
+                        <span class="badge text-white" style="background-color: #6610f2; font-size: 0.7rem;">-${promo.desconto}%</span>
+                        <span class="text-muted text-decoration-line-through" style="font-size: 0.75rem;">R$ ${promo.precoOriginal}</span>
+                    </div>
+                    <span class="fw-bold text-warning" style="font-size: 0.95rem;">R$ ${promo.precoAtual}</span>
+                </div>
+            `;
+        }
+
         // ── Descrições personalizadas (Em Alta) ─────────────────────────
         const descricoes = {
-            'Resident Evil 9: Requiem': 'Réquiem para os mortos, pesadelo para os vivos. Raccoon City te espera novamente.',
+            'Resident Evil 9: Requiem': 'Réquiem para os mortos, pesadelo para os vivos. Raccoon City te espera.',
             'Pragmata': 'Acompanhe Hugh, membro de uma arruinada equipe de investigação, e Diana, um androide, enquanto exploram uma instalação lunar controlada por uma IA rebelde e tentam voltar à Terra.',
             'Replaced': 'Enfrente as consequências das ações da Corporação Fênix pelos olhos de sua própria criação, R.E.A.C.H., uma inteligência artificial presa em um corpo humano.',
             'Crimson Desert': 'Bem-vindo a Pywel. Das regiões selvagens e cidades ao misterioso Abismo, forje seu caminho com batalhas e descobertas.',
@@ -358,15 +475,17 @@
         function montaCardCategoria(jogo) {
             const generos = jogo.genres?.map(g => g.name).join(', ') ?? '';
             const capa = jogo.background_image ?? 'imagem-padrao.jpg';
+            const promo = gerarPromocao(jogo.id);
             return `
-                <div class="categoria-card">
-                    <div class="card-jogo d-flex flex-column rounded-3 h-100 w-100" style="overflow: visible;">
-                        <img src="${capa}" style="height: 200px; object-fit: cover; width: 100%;" alt="${jogo.name}">
-                        <div class="d-flex flex-column text-white flex-grow-1" style="background-color: #230752; padding: 0.75rem;">
+                <div class="categoria-card" onclick="window.location.href='produto.html?id=${jogo.id}'">
+                    <div class="card-jogo d-flex flex-column rounded-3 h-100 w-100" style="overflow: visible; position: relative;">
+                        ${promo.emPromocao ? `<span class="badge position-absolute top-0 end-0 m-2 text-white" style="background-color:#6610f2; z-index:1;">-${promo.desconto}% OFF</span>` : ''}
+                        <img src="${capa}" style="height: 200px; object-fit: cover; width: 100%; border-radius: 0.375rem 0.375rem 0 0;" alt="${jogo.name}">
+                        <div class="d-flex flex-column text-white flex-grow-1" style="background-color: #230752; padding: 0.75rem; border-radius: 0 0 0.375rem 0.375rem;">
                             <h6 class="mb-1" style="font-size: 0.85rem; line-height: 1.3;">${jogo.name}</h6>
                             <p class="text-muted mb-2" style="font-size: 0.75rem;">${generos}</p>
                             <div class="mt-auto d-flex align-items-center justify-content-between">
-                                <span class="fw-bold" style="font-size: 0.9rem;">R$ ${gerarPreco(jogo.id)}</span>
+                                ${montaPreco(jogo.id)}
                                 <a href="produto.html?id=${jogo.id}" class="btn orbitmain btn-sm text-white"
                                    style="font-size: 0.75rem; padding: 0.2rem 0.6rem; cursor: pointer;"
                                    onclick="event.stopPropagation()">Ver jogo</a>
@@ -424,6 +543,90 @@
         document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
             new bootstrap.Tooltip(el);
         });
+
+        // ── Sistema de login ────────────────────────────────────────────
+        function atualizarAreaLogin() {
+            const usuario = localStorage.getItem('orbitUsuario');
+            const area = document.getElementById('areaLogin');
+
+            if (usuario) {
+                // Usuário logado: mostra o nome com opção de sair
+                area.innerHTML = `
+                    <div class="dropdown">
+                        <span class="text-white fw-bold dropdown-toggle" style="cursor:pointer; font-size:0.95rem;"
+                              data-bs-toggle="dropdown">
+                            👤 ${usuario}
+                        </span>
+                        <ul class="dropdown-menu dropdown-menu-end" style="background-color:#1a1a2e; border-color:#6610f2;">
+                            <li>
+                                <button class="dropdown-item text-danger" onclick="sairConta()">
+                                    Sair
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                `;
+            } else {
+                // Não logado: mostra ícone de login
+                area.innerHTML = `
+                    <img src="./LoginIcon.png" alt="Login" width="36" height="36"
+                         style="cursor:pointer;"
+                         data-bs-toggle="modal" data-bs-target="#modalLogin"
+                         title="Criar conta / Entrar">
+                `;
+            }
+        }
+
+        function criarConta() {
+            const usuario = document.getElementById('inputUsuario').value.trim();
+            const email   = document.getElementById('inputEmail').value.trim();
+            const senha   = document.getElementById('inputSenha').value;
+            const erro    = document.getElementById('erroLogin');
+
+            if (!usuario || !email || !senha) {
+                erro.textContent = 'Por favor, preencha todos os campos.';
+                erro.style.display = 'block';
+                return;
+            }
+
+            if (senha.length < 6) {
+                erro.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+                erro.style.display = 'block';
+                return;
+            }
+
+            // Salva no localStorage
+            localStorage.setItem('orbitUsuario', usuario);
+            localStorage.setItem('orbitEmail', email);
+
+            // Fecha o modal e atualiza a navbar
+            bootstrap.Modal.getInstance(document.getElementById('modalLogin')).hide();
+            atualizarAreaLogin();
+
+            // Limpa os campos
+            document.getElementById('inputUsuario').value = '';
+            document.getElementById('inputEmail').value = '';
+            document.getElementById('inputSenha').value = '';
+            erro.style.display = 'none';
+        }
+
+        function sairConta() {
+            localStorage.removeItem('orbitUsuario');
+            localStorage.removeItem('orbitEmail');
+            atualizarAreaLogin();
+        }
+
+        // Inicializa ao carregar a página
+        atualizarAreaLogin();
+
+        // ── Busca ────────────────────────────────────────────────
+        function buscar(event) {
+            event.preventDefault();
+            const termo = document.getElementById('campoBusca').value.trim();
+            if (termo) {
+                window.location.href = `resultado.html?q=${encodeURIComponent(termo)}`;
+            }
+        }
     </script>
 
 
