@@ -71,14 +71,52 @@
                     </a>
                 </div>
 
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="..." aria-label="Search" style="background-color: #1f1c3e;" />
+                <form class="d-flex" role="search" onsubmit="buscar(event)">
+                    <input class="form-control me-2" type="search" id="campoBusca" placeholder="Buscar jogos..." aria-label="Search" style="background-color: #1f1c3e;" />
                     <button class="btn btn-outline-light" type="submit">Buscar</button>
                 </form>
+
+                <!-- Login -->
+                <div class="ms-3 d-flex align-items-center" id="areaLogin">
+                </div>
 
             </div>
         </div>
     </nav>
+
+    <!-- Modal de cadastro -->
+    <div class="modal fade" id="modalLogin" tabindex="-1" aria-labelledby="modalLoginLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: #1a1a2e; border: 1px solid #6610f2;">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-white" id="modalLoginLabel">Criar conta</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label text-light">Nome de usuário</label>
+                        <input type="text" class="form-control" id="inputUsuario" placeholder="Seu nome de usuário"
+                            style="background-color: #0d0d1a; border-color: #6610f2; color: white;">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-light">Email</label>
+                        <input type="email" class="form-control" id="inputEmail" placeholder="seu@email.com"
+                            style="background-color: #0d0d1a; border-color: #6610f2; color: white;">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-light">Senha</label>
+                        <input type="password" class="form-control" id="inputSenha" placeholder="••••••••"
+                            style="background-color: #0d0d1a; border-color: #6610f2; color: white;">
+                    </div>
+                    <p id="erroLogin" class="text-danger" style="font-size: 0.85rem; display: none;"></p>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn w-100 text-white fw-bold" style="background-color: #6610f2;"
+                        onclick="criarConta()">Criar conta</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Conteúdo do produto -->
     <div class="container mt-5">
@@ -102,7 +140,7 @@
         </div>
     </div>
 
-    <div class="container-xl mb-5">    
+    <div class="container-xl mb-5">
         <hr>
         <p class="text-center text-muted">© 2026 Orbit. Todos os direitos reservados.</p>
     </div>
@@ -114,27 +152,45 @@
         const id = new URLSearchParams(window.location.search).get('id');
 
         function gerarPreco(id) {
-            // Usa o id do jogo como semente — sempre gera o mesmo número para o mesmo jogo
             const semente = id * 9301 + 49297;
             const pseudo = (semente % 233280) / 233280;
             return (pseudo * 280 + 20).toFixed(2);
         }
 
+        function gerarPromocao(id) {
+            const emPromocao = (id % 4 === 0);
+            const precoOriginal = parseFloat(gerarPreco(id));
+            if (!emPromocao) return { emPromocao: false, precoOriginal, precoAtual: precoOriginal, desconto: 0 };
+            const descontoSemente = (id * 1234567) % 100;
+            const desconto = 10 + (descontoSemente % 51);
+            const precoAtual = (precoOriginal * (1 - desconto / 100)).toFixed(2);
+            return { emPromocao: true, precoOriginal: precoOriginal.toFixed(2), precoAtual, desconto };
+        }
+
         fetch(`https://api.rawg.io/api/games/${id}?key=${API_KEY}`)
             .then(r => r.json())
             .then(jogo => {
-                // Título da aba do navegador
                 document.title = jogo.name + ' — Orbit';
 
                 document.getElementById('nome').textContent = jogo.name;
                 document.getElementById('capa').src = jogo.background_image ?? 'imagem-padrao.jpg';
                 document.getElementById('capa').alt = jogo.name;
-                document.getElementById('avaliacao').textContent = `AvaliaçãoQ ${jogo.rating}/5 ⭐ (${jogo.ratings_count} avaliações)`;
+                document.getElementById('avaliacao').textContent = `Avaliação: ${jogo.rating}/5 ⭐ (${jogo.ratings_count} avaliações)`;
                 document.getElementById('descricao').textContent = jogo.description_raw ?? 'Sem descrição disponível.';
                 document.getElementById('generos').textContent = jogo.genres?.map(g => g.name).join(', ') ?? '';
 
-                const preco = gerarPreco(jogo.id);
-                document.getElementById('preco').textContent = `R$ ${preco}`;
+                const promo = gerarPromocao(jogo.id);
+                const precoEl = document.getElementById('preco');
+
+                if (!promo.emPromocao) {
+                    precoEl.textContent = `R$ ${promo.precoOriginal}`;
+                } else {
+                    precoEl.innerHTML = `
+                        <span class="badge text-white me-2" style="background-color:#6610f2; font-size:1rem;">-${promo.desconto}% OFF</span>
+                        <span class="text-muted text-decoration-line-through me-2" style="font-size:1.1rem;">R$ ${promo.precoOriginal}</span>
+                        <span class="text-warning fw-bold" style="font-size:1.5rem;">R$ ${promo.precoAtual}</span>
+                    `;
+                }
             })
             .catch(() => {
                 document.getElementById('nome').textContent = 'Jogo não encontrado.';
@@ -144,6 +200,82 @@
         document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
             new bootstrap.Tooltip(el);
         });
+
+        // ── Sistema de login ──────────────────────────────────────
+        function atualizarAreaLogin() {
+            const usuario = localStorage.getItem('orbitUsuario');
+            const area = document.getElementById('areaLogin');
+
+            if (usuario) {
+                area.innerHTML = `
+            <div class="dropdown">
+                <span class="text-white fw-bold dropdown-toggle" style="cursor:pointer; font-size:0.95rem;"
+                      data-bs-toggle="dropdown">
+                    👤 ${usuario}
+                </span>
+                <ul class="dropdown-menu dropdown-menu-end" style="background-color:#1a1a2e; border-color:#6610f2;">
+                    <li>
+                        <button class="dropdown-item text-danger" onclick="sairConta()">Sair</button>
+                    </li>
+                </ul>
+            </div>
+        `;
+            } else {
+                area.innerHTML = `
+            <img src="./LoginIcon.png" alt="Login" width="36" height="36"
+                 style="cursor:pointer;"
+                 data-bs-toggle="modal" data-bs-target="#modalLogin"
+                 title="Criar conta / Entrar">
+        `;
+            }
+        }
+
+        function criarConta() {
+            const usuario = document.getElementById('inputUsuario').value.trim();
+            const email = document.getElementById('inputEmail').value.trim();
+            const senha = document.getElementById('inputSenha').value;
+            const erro = document.getElementById('erroLogin');
+
+            if (!usuario || !email || !senha) {
+                erro.textContent = 'Por favor, preencha todos os campos.';
+                erro.style.display = 'block';
+                return;
+            }
+
+            if (senha.length < 6) {
+                erro.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+                erro.style.display = 'block';
+                return;
+            }
+
+            localStorage.setItem('orbitUsuario', usuario);
+            localStorage.setItem('orbitEmail', email);
+
+            bootstrap.Modal.getInstance(document.getElementById('modalLogin')).hide();
+            atualizarAreaLogin();
+
+            document.getElementById('inputUsuario').value = '';
+            document.getElementById('inputEmail').value = '';
+            document.getElementById('inputSenha').value = '';
+            erro.style.display = 'none';
+        }
+
+        function sairConta() {
+            localStorage.removeItem('orbitUsuario');
+            localStorage.removeItem('orbitEmail');
+            atualizarAreaLogin();
+        }
+
+        atualizarAreaLogin();
+
+        // ── Busca ────────────────────────────────────────────────
+        function buscar(event) {
+            event.preventDefault();
+            const termo = document.getElementById('campoBusca').value.trim();
+            if (termo) {
+                window.location.href = `resultado.html?q=${encodeURIComponent(termo)}`;
+            }
+        }
     </script>
 
 </body>
