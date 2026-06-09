@@ -156,13 +156,51 @@
                         <img src="./carrinhoicon.png" alt="Carrinho" width="30" height="30" class="m-3" />
                     </a>
                 </div>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="..." aria-label="Search" style="background-color: #1f1c3e;" />
+                <form class="d-flex" role="search" onsubmit="buscar(event)">
+                    <input class="form-control me-2" type="search" id="campoBusca" placeholder="Buscar jogos..." aria-label="Search" style="background-color: #1f1c3e;" />
                     <button class="btn btn-outline-light" type="submit">Buscar</button>
                 </form>
+
+                <!-- Login -->
+                <div class="ms-3 d-flex align-items-center" id="areaLogin">
+                </div>
             </div>
         </div>
     </nav>
+
+    <!-- Modal de cadastro -->
+    <div class="modal fade" id="modalLogin" tabindex="-1" aria-labelledby="modalLoginLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: #1a1a2e; border: 1px solid #6610f2;">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-white" id="modalLoginLabel">Criar conta</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label text-light">Nome de usuário</label>
+                        <input type="text" class="form-control" id="inputUsuario" placeholder="Seu nome de usuário"
+                            style="background-color: #0d0d1a; border-color: #6610f2; color: white;">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-light">Email</label>
+                        <input type="email" class="form-control" id="inputEmail" placeholder="seu@email.com"
+                            style="background-color: #0d0d1a; border-color: #6610f2; color: white;">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-light">Senha</label>
+                        <input type="password" class="form-control" id="inputSenha" placeholder="••••••••"
+                            style="background-color: #0d0d1a; border-color: #6610f2; color: white;">
+                    </div>
+                    <p id="erroLogin" class="text-danger" style="font-size: 0.85rem; display: none;"></p>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn w-100 text-white fw-bold" style="background-color: #6610f2;"
+                        onclick="criarConta()">Criar conta</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="container-xl mt-4">
         <div class="d-flex gap-4 align-items-start">
@@ -317,21 +355,21 @@
 
             jogosFiltrados.forEach(jogo => {
                 const capa = jogo.background_image ?? 'imagem-padrao.jpg';
+                const promo = gerarPromocao(jogo.id);
 
-                // Gera preço fixo por jogo (baseado no id pra não mudar ao paginar)
-                const preco = gerarPreco(jogo.id);
-
-                // Filtra pelo preço máximo escolhido
-                if (parseFloat(preco) > parseFloat(precoMaximo)) return;
+                // Filtra pelo preço máximo (usa preço atual se em promoção)
+                const precoParaFiltro = promo.emPromocao ? parseFloat(promo.precoAtual) : promo.precoOriginal;
+                if (precoParaFiltro > parseFloat(precoMaximo)) return;
 
                 container.innerHTML += `
                     <div class="col-md-4 col-lg-3 mb-4">
-                        <div class="card h-100">
+                        <div class="card h-100 position-relative">
+                            ${promo.emPromocao ? `<span class="badge position-absolute top-0 end-0 m-2 text-white" style="background-color:#6610f2; z-index:1;">-${promo.desconto}% OFF</span>` : ''}
                             <img src="${capa}" class="card-img-top" alt="${jogo.name}" style="height: 160px; object-fit: cover;">
                             <div class="card-body" style="background-color: #230752;">
                                 <h5 class="card-title" style="font-size: 0.95rem;">${jogo.name}</h5>
                                 <p class="text-muted" style="font-size: 0.8rem;">${jogo.genres?.map(g => g.name).join(', ') ?? ''}</p>
-                                <p class="fw-bold mb-2">R$ ${preco}</p>
+                                ${montaPreco(jogo.id)}
                                 <a href="produto.html?id=${jogo.id}" class="btn orbitmain text-white btn-sm">Ver jogo</a>
                             </div>
                         </div>
@@ -345,10 +383,35 @@
         }
 
         function gerarPreco(id) {
-            // Usa o id do jogo como semente — sempre gera o mesmo número para o mesmo jogo
             const semente = id * 9301 + 49297;
             const pseudo = (semente % 233280) / 233280;
             return (pseudo * 280 + 20).toFixed(2);
+        }
+
+        function gerarPromocao(id) {
+            const emPromocao = (id % 4 === 0);
+            const precoOriginal = parseFloat(gerarPreco(id));
+            if (!emPromocao) return { emPromocao: false, precoOriginal, precoAtual: precoOriginal, desconto: 0 };
+            const descontoSemente = (id * 1234567) % 100;
+            const desconto = 10 + (descontoSemente % 51);
+            const precoAtual = (precoOriginal * (1 - desconto / 100)).toFixed(2);
+            return { emPromocao: true, precoOriginal: precoOriginal.toFixed(2), precoAtual, desconto };
+        }
+
+        function montaPreco(id) {
+            const promo = gerarPromocao(id);
+            if (!promo.emPromocao) {
+                return `<p class="fw-bold mb-2">R$ ${promo.precoOriginal}</p>`;
+            }
+            return `
+                <div class="mb-2">
+                    <div class="d-flex align-items-center gap-1 mb-1">
+                        <span class="badge text-white" style="background-color:#6610f2; font-size:0.7rem;">-${promo.desconto}%</span>
+                        <span class="text-muted text-decoration-line-through" style="font-size:0.8rem;">R$ ${promo.precoOriginal}</span>
+                    </div>
+                    <span class="fw-bold text-warning">R$ ${promo.precoAtual}</span>
+                </div>
+            `;
         }
 
         function renderizarPaginacao() {
@@ -398,6 +461,82 @@
         document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
             new bootstrap.Tooltip(el);
         });
+
+        // ── Sistema de login ──────────────────────────────────────
+        function atualizarAreaLogin() {
+            const usuario = localStorage.getItem('orbitUsuario');
+            const area = document.getElementById('areaLogin');
+
+            if (usuario) {
+                area.innerHTML = `
+            <div class="dropdown">
+                <span class="text-white fw-bold dropdown-toggle" style="cursor:pointer; font-size:0.95rem;"
+                      data-bs-toggle="dropdown">
+                    👤 ${usuario}
+                </span>
+                <ul class="dropdown-menu dropdown-menu-end" style="background-color:#1a1a2e; border-color:#6610f2;">
+                    <li>
+                        <button class="dropdown-item text-danger" onclick="sairConta()">Sair</button>
+                    </li>
+                </ul>
+            </div>
+        `;
+            } else {
+                area.innerHTML = `
+            <img src="./LoginIcon.png" alt="Login" width="36" height="36"
+                 style="cursor:pointer;"
+                 data-bs-toggle="modal" data-bs-target="#modalLogin"
+                 title="Criar conta / Entrar">
+        `;
+            }
+        }
+
+        function criarConta() {
+            const usuario = document.getElementById('inputUsuario').value.trim();
+            const email = document.getElementById('inputEmail').value.trim();
+            const senha = document.getElementById('inputSenha').value;
+            const erro = document.getElementById('erroLogin');
+
+            if (!usuario || !email || !senha) {
+                erro.textContent = 'Por favor, preencha todos os campos.';
+                erro.style.display = 'block';
+                return;
+            }
+
+            if (senha.length < 6) {
+                erro.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+                erro.style.display = 'block';
+                return;
+            }
+
+            localStorage.setItem('orbitUsuario', usuario);
+            localStorage.setItem('orbitEmail', email);
+
+            bootstrap.Modal.getInstance(document.getElementById('modalLogin')).hide();
+            atualizarAreaLogin();
+
+            document.getElementById('inputUsuario').value = '';
+            document.getElementById('inputEmail').value = '';
+            document.getElementById('inputSenha').value = '';
+            erro.style.display = 'none';
+        }
+
+        function sairConta() {
+            localStorage.removeItem('orbitUsuario');
+            localStorage.removeItem('orbitEmail');
+            atualizarAreaLogin();
+        }
+
+        atualizarAreaLogin();
+
+        // ── Busca ────────────────────────────────────────────────
+        function buscar(event) {
+            event.preventDefault();
+            const termo = document.getElementById('campoBusca').value.trim();
+            if (termo) {
+                window.location.href = `resultado.html?q=${encodeURIComponent(termo)}`;
+            }
+        }
     </script>
 
 </body>
