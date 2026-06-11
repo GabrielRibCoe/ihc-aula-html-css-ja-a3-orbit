@@ -1,33 +1,101 @@
 <!doctype html>
-
 <html lang="pt-br" data-bs-theme="dark">
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Orbit</title>
+    <title>Biblioteca — Orbit</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="icon" type="image/png" href="./planet.png">
 
     <style>
-        body {
-            background-image: linear-gradient(to right, #141425, #1f1c3e);
-        }
+        body { background-image: linear-gradient(to right, #141425, #1f1c3e); }
+        .orbitmain { background-color: #6610f2; }
 
-        .orbitmain {
+        .card-jogo {
+            background-color: #1a1a2e;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            height: 100%;
+        }
+        .card-jogo:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 24px rgba(102, 16, 242, 0.4);
+        }
+        .card-jogo img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+        .card-info {
+            padding: 0.85rem;
+            background-color: #230752;
+        }
+        .card-nome {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .card-data {
+            font-size: 0.75rem;
+            color: #888;
+            margin-bottom: 0.6rem;
+        }
+        .btn-chave {
             background-color: #6610f2;
+            border: none;
+            color: white;
+            font-size: 0.8rem;
+            padding: 0.35rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 100%;
+        }
+        .btn-chave:hover { background-color: #4a0ab5; }
+
+        /* Modal chave */
+        .modal-chave .modal-content {
+            background-color: #1a1a2e;
+            border: 1px solid #6610f2;
+        }
+        .chave-display {
+            background-color: #0d0d1a;
+            border: 1px solid #6610f2;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-family: monospace;
+            font-size: 1.1rem;
+            letter-spacing: 0.15em;
+            color: #a87aff;
+            text-align: center;
+            user-select: all;
         }
 
-        .orbitdark {
-            color: #230752;
+        /* Estado deslogado */
+        .aviso-login {
+            text-align: center;
+            padding: 5rem 0;
         }
+        .aviso-login i { font-size: 3.5rem; color: #444; }
+
+        /* Biblioteca vazia */
+        .biblioteca-vazia {
+            text-align: center;
+            padding: 5rem 0;
+        }
+        .biblioteca-vazia i { font-size: 3.5rem; color: #444; }
     </style>
-
 </head>
 
 <body>
-
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -36,57 +104,36 @@
         integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y"
         crossorigin="anonymous"></script>
 
-    <!--Barra de navegação-->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg orbitmain">
         <div class="container-xl">
-
-            <!--Logo Orbit clicavel-->
-            <a class="navbar-brand" href="index.html" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                title="Página Inicial">
+            <a class="navbar-brand" href="index.html" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Página Inicial">
                 <img src="./orbitlogo.png" alt="Logo" width="125" height="75" class="object-fit-cover" />
             </a>
-
-            <!--Botão explandivel quando a tela é pequena-->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-                <!--Textos interativos-->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
                     <li class="nav-item">
-                        <a class="nav-link active text-light" aria-current="page" href="biblioteca.html">Biblioteca</a>
+                        <a class="nav-link active text-light" href="biblioteca.html">Biblioteca</a>
                     </li>
-
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="catalogo.html">Catalogo</a>
+                        <a class="nav-link text-light" href="catalogo.html">Catálogo</a>
                     </li>
-
                 </ul>
-
-                <!--Carrinho-->
-
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-
                     <a class="nav-link text-light" href="carrinho.html">
                         <img src="./carrinhoicon.png" alt="Carrinho" width="30" height="30" class="m-3" />
                     </a>
                 </div>
-
-                <!--Barra de pesquisa-->
                 <form class="d-flex" role="search" onsubmit="buscar(event)">
                     <input class="form-control me-2" type="search" id="campoBusca" placeholder="Buscar jogos..." aria-label="Search" style="background-color: #1f1c3e;" />
                     <button class="btn btn-outline-light" type="submit">Buscar</button>
                 </form>
-
-                <!-- Login -->
-                <div class="ms-3 d-flex align-items-center" id="areaLogin">
-                </div>
-
+                <div class="ms-3 d-flex align-items-center" id="areaLogin"></div>
             </div>
         </div>
     </nav>
@@ -125,6 +172,42 @@
         </div>
     </div>
 
+    <!-- Modal de chave de ativação -->
+    <div class="modal fade modal-chave" id="modalChave" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content p-4">
+                <div class="modal-header border-0 pb-2">
+                    <div>
+                        <h5 class="modal-title text-white fw-bold mb-0" id="chaveNomeJogo"></h5>
+                        <small class="text-muted">Chave de ativação</small>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body pt-2">
+                    <p class="text-muted mb-3" style="font-size:0.85rem;">
+                        Use esta chave para ativar seu jogo na plataforma desejada.
+                    </p>
+                    <div class="chave-display" id="chaveValor"></div>
+                    <p class="text-muted mt-2 text-center" style="font-size:0.75rem;">
+                        Clique na chave para selecionar e copiar
+                    </p>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button class="btn w-100 text-white" style="background-color:#6610f2;"
+                            onclick="copiarChave()">
+                        <i class="bi bi-clipboard me-1"></i> Copiar chave
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Conteúdo -->
+    <div class="container-xl mt-5 mb-5">
+        <div id="cabecalhoBiblioteca"></div>
+        <div class="row g-4 mt-2" id="jogosLista"></div>
+    </div>
+
     <div class="container-xl mb-5">
         <hr>
         <p class="text-center text-muted">© 2026 Orbit. Todos os direitos reservados.</p>
@@ -132,64 +215,158 @@
 
     <script>
 
-        // Ativa todos os tooltips da página
-        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
-            new bootstrap.Tooltip(el);
-        });
+        // ── Geração de chave determinística ─────────────────────
+        // Chave fixa por jogo + conta. Se o jogo for comprado de novo,
+        // o índice na biblioteca muda e a chave muda também.
+        function gerarChave(usuario, jogoId, indice) {
+            // Cria uma semente combinando usuário, id do jogo e posição na biblioteca
+            let semente = 0;
+            const str = `${usuario}-${jogoId}-${indice}`;
+            for (let i = 0; i < str.length; i++) {
+                semente = (semente * 31 + str.charCodeAt(i)) >>> 0;
+            }
 
-        // ── Sistema de login ──────────────────────────────────────
+            // Gera 4 grupos de 4 caracteres alfanuméricos
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let chave = '';
+            for (let grupo = 0; grupo < 4; grupo++) {
+                for (let c = 0; c < 4; c++) {
+                    semente = (semente * 1664525 + 1013904223) >>> 0;
+                    chave += chars[semente % chars.length];
+                }
+                if (grupo < 3) chave += '-';
+            }
+            return chave;
+        }
+
+        // ── Renderizar biblioteca ───────────────────────────────
+        function renderizarBiblioteca() {
+            const usuario = localStorage.getItem('orbitUsuario');
+            const cabecalho = document.getElementById('cabecalhoBiblioteca');
+            const lista = document.getElementById('jogosLista');
+
+            // Usuário deslogado
+            if (!usuario) {
+                cabecalho.innerHTML = '';
+                lista.innerHTML = `
+                    <div class="aviso-login col-12">
+                        <i class="bi bi-person-lock"></i>
+                        <p class="text-muted mt-3 fs-5">Faça login para ver sua biblioteca.</p>
+                        <button class="btn text-white mt-2" style="background-color:#6610f2;"
+                                data-bs-toggle="modal" data-bs-target="#modalLogin">
+                            Criar conta / Entrar
+                        </button>
+                    </div>`;
+                return;
+            }
+
+            const chave = `orbitBiblioteca_${usuario}`;
+            const biblioteca = JSON.parse(localStorage.getItem(chave) ?? '[]');
+
+            cabecalho.innerHTML = `
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <h2 class="fw-bold mb-0">📚 Biblioteca de ${usuario}</h2>
+                        <p class="text-muted mt-1">${biblioteca.length} jogo(s) na sua coleção</p>
+                    </div>
+                    <a href="catalogo.html" class="btn btn-outline-light btn-sm">
+                        <i class="bi bi-plus-lg me-1"></i> Adicionar jogos
+                    </a>
+                </div>
+            `;
+
+            if (biblioteca.length === 0) {
+                lista.innerHTML = `
+                    <div class="biblioteca-vazia col-12">
+                        <i class="bi bi-collection-play"></i>
+                        <p class="text-muted mt-3 fs-5">Sua biblioteca está vazia.</p>
+                        <a href="catalogo.html" class="btn text-white mt-2" style="background-color:#6610f2;">
+                            Explorar catálogo
+                        </a>
+                    </div>`;
+                return;
+            }
+
+            lista.innerHTML = '';
+            biblioteca.forEach((jogo, indice) => {
+                lista.innerHTML += `
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="card-jogo" onclick="window.location.href='produto.html?id=${jogo.id}'">
+                            <img src="${jogo.capa}" alt="${jogo.nome}" onerror="this.src='imagem-padrao.jpg'">
+                            <div class="card-info">
+                                <div class="card-nome text-white">${jogo.nome}</div>
+                                <div class="card-data">Obtido em ${jogo.obtidoEm ?? '—'}</div>
+                                <button class="btn-chave"
+                                        onclick="event.stopPropagation(); exibirChave('${jogo.nome}', '${jogo.id}', ${indice}, '${usuario}')">
+                                    <i class="bi bi-key me-1"></i> Exibir chave
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // ── Modal de chave ──────────────────────────────────────
+        function exibirChave(nome, jogoId, indice, usuario) {
+            const chave = gerarChave(usuario, jogoId, indice);
+            document.getElementById('chaveNomeJogo').textContent = nome;
+            document.getElementById('chaveValor').textContent = chave;
+            new bootstrap.Modal(document.getElementById('modalChave')).show();
+        }
+
+        function copiarChave() {
+            const chave = document.getElementById('chaveValor').textContent;
+            navigator.clipboard.writeText(chave).then(() => {
+                const btn = document.querySelector('#modalChave .modal-footer .btn');
+                btn.innerHTML = '<i class="bi bi-check-lg me-1"></i> Copiado!';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="bi bi-clipboard me-1"></i> Copiar chave';
+                }, 2000);
+            });
+        }
+
+        // ── Busca ─────────────────────────────────────────────────
+        function buscar(event) {
+            event.preventDefault();
+            const termo = document.getElementById('campoBusca').value.trim();
+            if (termo) window.location.href = `resultado.html?q=${encodeURIComponent(termo)}`;
+        }
+
+        // ── Login ─────────────────────────────────────────────────
         function atualizarAreaLogin() {
             const usuario = localStorage.getItem('orbitUsuario');
             const area = document.getElementById('areaLogin');
-
             if (usuario) {
                 area.innerHTML = `
-            <div class="dropdown">
-                <span class="text-white fw-bold dropdown-toggle" style="cursor:pointer; font-size:0.95rem;"
-                      data-bs-toggle="dropdown">
-                    👤 ${usuario}
-                </span>
-                <ul class="dropdown-menu dropdown-menu-end" style="background-color:#1a1a2e; border-color:#6610f2;">
-                    <li>
-                        <button class="dropdown-item text-danger" onclick="sairConta()">Sair</button>
-                    </li>
-                </ul>
-            </div>
-        `;
+                    <div class="dropdown">
+                        <span class="text-white fw-bold dropdown-toggle" style="cursor:pointer; font-size:0.95rem;"
+                              data-bs-toggle="dropdown">👤 ${usuario}</span>
+                        <ul class="dropdown-menu dropdown-menu-end" style="background-color:#1a1a2e; border-color:#6610f2;">
+                            <li><button class="dropdown-item text-danger" onclick="sairConta()">Sair</button></li>
+                        </ul>
+                    </div>`;
             } else {
                 area.innerHTML = `
-            <img src="./LoginIcon.png" alt="Login" width="36" height="36"
-                 style="cursor:pointer;"
-                 data-bs-toggle="modal" data-bs-target="#modalLogin"
-                 title="Criar conta / Entrar">
-        `;
+                    <img src="./LoginIcon.png" alt="Login" width="36" height="36"
+                         style="cursor:pointer;"
+                         data-bs-toggle="modal" data-bs-target="#modalLogin"
+                         title="Criar conta / Entrar">`;
             }
+            renderizarBiblioteca();
         }
 
         function criarConta() {
             const usuario = document.getElementById('inputUsuario').value.trim();
-            const email = document.getElementById('inputEmail').value.trim();
-            const senha = document.getElementById('inputSenha').value;
-            const erro = document.getElementById('erroLogin');
-
-            if (!usuario || !email || !senha) {
-                erro.textContent = 'Por favor, preencha todos os campos.';
-                erro.style.display = 'block';
-                return;
-            }
-
-            if (senha.length < 6) {
-                erro.textContent = 'A senha deve ter pelo menos 6 caracteres.';
-                erro.style.display = 'block';
-                return;
-            }
-
+            const email   = document.getElementById('inputEmail').value.trim();
+            const senha   = document.getElementById('inputSenha').value;
+            const erro    = document.getElementById('erroLogin');
+            if (!usuario || !email || !senha) { erro.textContent = 'Por favor, preencha todos os campos.'; erro.style.display = 'block'; return; }
+            if (senha.length < 6) { erro.textContent = 'A senha deve ter pelo menos 6 caracteres.'; erro.style.display = 'block'; return; }
             localStorage.setItem('orbitUsuario', usuario);
             localStorage.setItem('orbitEmail', email);
-
             bootstrap.Modal.getInstance(document.getElementById('modalLogin')).hide();
             atualizarAreaLogin();
-
             document.getElementById('inputUsuario').value = '';
             document.getElementById('inputEmail').value = '';
             document.getElementById('inputSenha').value = '';
@@ -202,17 +379,9 @@
             atualizarAreaLogin();
         }
 
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
         atualizarAreaLogin();
-
-        // ── Busca ────────────────────────────────────────────────
-        function buscar(event) {
-            event.preventDefault();
-            const termo = document.getElementById('campoBusca').value.trim();
-            if (termo) {
-                window.location.href = `resultado.html?q=${encodeURIComponent(termo)}`;
-            }
-        }
     </script>
-</body>
 
+</body>
 </html>
