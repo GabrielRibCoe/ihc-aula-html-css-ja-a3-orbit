@@ -7,25 +7,111 @@
     <title>Orbit</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="icon" type="image/png" href="./planet.png">
 
     <style>
-        body {
-            background-image: linear-gradient(to right, #141425, #1f1c3e);
-        }
+        body { background-image: linear-gradient(to right, #141425, #1f1c3e); }
+        .orbitmain { background-color: #6610f2; }
+        .orbitdark { color: #230752; }
 
-        .orbitmain {
-            background-color: #6610f2;
+        /* Slider de screenshots */
+        .screenshot-slider {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            background: #000;
         }
-
-        .orbitdark {
-            color: #230752;
-        }
-
-        #capa {
-            max-height: 400px;
-            object-fit: cover;
+        .screenshot-slider img {
             width: 100%;
+            height: 380px;
+            object-fit: cover;
+            display: none;
+        }
+        .screenshot-slider img.ativa { display: block; }
+
+        .thumbnails {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+        .thumbnails img {
+            height: 60px;
+            width: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+            flex-shrink: 0;
+            border: 2px solid transparent;
+        }
+        .thumbnails img.ativa {
+            opacity: 1;
+            border-color: #6610f2;
+        }
+        .thumbnails::-webkit-scrollbar { height: 4px; }
+        .thumbnails::-webkit-scrollbar-thumb { background: #6610f2; border-radius: 10px; }
+
+        .btn-slide {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.6);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            padding: 0.5rem 0.8rem;
+            cursor: pointer;
+            z-index: 2;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .btn-slide:hover { background: rgba(102,16,242,0.8); }
+        .btn-slide.prev { left: 8px; }
+        .btn-slide.next { right: 8px; }
+
+        /* Info lateral */
+        .info-box {
+            background-color: #1a1a2e;
+            border-radius: 10px;
+            padding: 1.25rem;
+        }
+        .info-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #888;
+            margin-bottom: 2px;
+        }
+        .info-valor { font-size: 0.9rem; }
+
+        /* Botão comprar */
+        .btn-comprar {
+            background-color: #6610f2;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
             border-radius: 8px;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        .btn-comprar:hover { background-color: #4a0ab5; }
+
+        /* Tags/gêneros */
+        .tag-genero {
+            display: inline-block;
+            background: #6610f222;
+            border: 1px solid #6610f2;
+            color: #a87aff;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            padding: 2px 10px;
+            margin: 2px;
         }
     </style>
 </head>
@@ -39,23 +125,18 @@
         integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y"
         crossorigin="anonymous"></script>
 
-    <!--Barra de navegação-->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg orbitmain">
         <div class="container-xl">
-
-            <a class="navbar-brand" href="index.html" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                title="Página Inicial">
+            <a class="navbar-brand" href="index.html" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Página Inicial">
                 <img src="./orbitlogo.png" alt="Logo" width="125" height="75" class="object-fit-cover" />
             </a>
-
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link text-light" href="biblioteca.html">Biblioteca</a>
@@ -64,22 +145,16 @@
                         <a class="nav-link text-light" href="catalogo.html">Catálogo</a>
                     </li>
                 </ul>
-
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <a class="nav-link text-light" href="carrinho.html">
                         <img src="./carrinhoicon.png" alt="Carrinho" width="30" height="30" class="m-3" />
                     </a>
                 </div>
-
                 <form class="d-flex" role="search" onsubmit="buscar(event)">
                     <input class="form-control me-2" type="search" id="campoBusca" placeholder="Buscar jogos..." aria-label="Search" style="background-color: #1f1c3e;" />
                     <button class="btn btn-outline-light" type="submit">Buscar</button>
                 </form>
-
-                <!-- Login -->
-                <div class="ms-3 d-flex align-items-center" id="areaLogin">
-                </div>
-
+                <div class="ms-3 d-flex align-items-center" id="areaLogin"></div>
             </div>
         </div>
     </nav>
@@ -119,22 +194,82 @@
     </div>
 
     <!-- Conteúdo do produto -->
-    <div class="container mt-5">
+    <div class="container-xl mt-4 mb-5">
+
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb" style="font-size:0.85rem;">
+                <li class="breadcrumb-item"><a href="catalogo.html" class="text-decoration-none" style="color:#a87aff;">Catálogo</a></li>
+                <li class="breadcrumb-item active text-muted" id="breadcrumbNome">Carregando...</li>
+            </ol>
+        </nav>
+
+        <!-- Nome do jogo -->
+        <h1 id="nome" class="mb-4 fw-bold"></h1>
+
+        <!-- Linha principal: slider + info -->
         <div class="row g-4">
 
-            <!-- Imagem do jogo -->
-            <div class="col-md-6">
-                <img id="capa" src="" alt="Capa do jogo">
+            <!-- Slider de screenshots -->
+            <div class="col-lg-7">
+                <div class="screenshot-slider" id="sliderContainer">
+                    <!-- imagens injetadas pelo JS -->
+                    <button class="btn-slide prev" onclick="slideAnterior()"><i class="bi bi-chevron-left"></i></button>
+                    <button class="btn-slide next" onclick="slideProximo()"><i class="bi bi-chevron-right"></i></button>
+                </div>
+                <div class="thumbnails" id="thumbnails"></div>
             </div>
 
-            <!-- Informações do jogo -->
-            <div class="col-md-6">
-                <h1 id="nome" class="mb-2"></h1>
-                <p id="generos" class="text-muted mb-3"></p>
-                <p id="avaliacao" class="mb-3"></p>
-                <p id="descricao" class="mb-4"></p>
-                <p id="preco" class="fs-4 fw-bold mb-4"></p>
-                <button class="btn btn-primary btn-lg">Adicionar ao Carrinho</button>
+            <!-- Info lateral -->
+            <div class="col-lg-5">
+                <div class="info-box h-100 d-flex flex-column">
+
+                    <!-- Capa -->
+                    <img id="capa" src="" alt="" class="rounded mb-3" style="width:100%; max-height:200px; object-fit:cover;">
+
+                    <!-- Descrição curta -->
+                    <p id="descricao" class="text-light mb-3" style="font-size:0.9rem; flex-grow:1;">
+                        <span class="text-muted fst-italic">Carregando descrição...</span>
+                    </p>
+
+                    <!-- Gêneros -->
+                    <div id="generos" class="mb-3"></div>
+
+                    <hr style="border-color:#333;">
+
+                    <!-- Avaliação -->
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="info-label align-self-center">Avaliação</span>
+                        <span id="avaliacao" class="info-valor text-end"></span>
+                    </div>
+
+                    <!-- Lançamento -->
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="info-label align-self-center">Lançamento</span>
+                        <span id="lancamento" class="info-valor text-end"></span>
+                    </div>
+
+                    <!-- Desenvolvedor -->
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="info-label align-self-center">Desenvolvedor</span>
+                        <span id="desenvolvedor" class="info-valor text-end"></span>
+                    </div>
+
+                    <!-- Publicador -->
+                    <div class="d-flex justify-content-between mb-4">
+                        <span class="info-label align-self-center">Publicadora</span>
+                        <span id="publicadora" class="info-valor text-end"></span>
+                    </div>
+
+                    <hr style="border-color:#333;">
+
+                    <!-- Preço e botão -->
+                    <div id="precoContainer" class="mb-3"></div>
+                    <button class="btn-comprar" onclick="adicionarAoCarrinho()">
+                        🛒 Adicionar ao Carrinho
+                    </button>
+
+                </div>
             </div>
 
         </div>
@@ -145,12 +280,11 @@
         <p class="text-center text-muted">© 2026 Orbit. Todos os direitos reservados.</p>
     </div>
 
-    <!-- Script DEPOIS do HTML -->
     <script>
         const API_KEY = 'c3c539ca3bd243f5939861bf749e43e7';
-
         const id = new URLSearchParams(window.location.search).get('id');
 
+        // ── Preço e promoção ────────────────────────────────────
         function gerarPreco(id) {
             const semente = id * 9301 + 49297;
             const pseudo = (semente % 233280) / 233280;
@@ -167,93 +301,193 @@
             return { emPromocao: true, precoOriginal: precoOriginal.toFixed(2), precoAtual, desconto };
         }
 
-        fetch(`https://api.rawg.io/api/games/${id}?key=${API_KEY}`)
-            .then(r => r.json())
-            .then(jogo => {
-                document.title = jogo.name + ' — Orbit';
+        // ── Slider ──────────────────────────────────────────────
+        let screenshots = [];
+        let slideAtual = 0;
 
-                document.getElementById('nome').textContent = jogo.name;
-                document.getElementById('capa').src = jogo.background_image ?? 'imagem-padrao.jpg';
-                document.getElementById('capa').alt = jogo.name;
-                document.getElementById('avaliacao').textContent = `Avaliação: ${jogo.rating}/5 ⭐ (${jogo.ratings_count} avaliações)`;
-                document.getElementById('descricao').textContent = jogo.description_raw ?? 'Sem descrição disponível.';
-                document.getElementById('generos').textContent = jogo.genres?.map(g => g.name).join(', ') ?? '';
+        function renderizarSlider(imgs) {
+            screenshots = imgs;
+            const container = document.getElementById('sliderContainer');
+            const thumbs = document.getElementById('thumbnails');
 
-                const promo = gerarPromocao(jogo.id);
-                const precoEl = document.getElementById('preco');
+            // Remove imagens antigas mas mantém os botões
+            container.querySelectorAll('img').forEach(el => el.remove());
+            thumbs.innerHTML = '';
 
-                if (!promo.emPromocao) {
-                    precoEl.textContent = `R$ ${promo.precoOriginal}`;
-                } else {
-                    precoEl.innerHTML = `
-                        <span class="badge text-white me-2" style="background-color:#6610f2; font-size:1rem;">-${promo.desconto}% OFF</span>
-                        <span class="text-muted text-decoration-line-through me-2" style="font-size:1.1rem;">R$ ${promo.precoOriginal}</span>
-                        <span class="text-warning fw-bold" style="font-size:1.5rem;">R$ ${promo.precoAtual}</span>
-                    `;
-                }
-            })
-            .catch(() => {
-                document.getElementById('nome').textContent = 'Jogo não encontrado.';
+            imgs.forEach((url, i) => {
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = `Screenshot ${i + 1}`;
+                if (i === 0) img.classList.add('ativa');
+                container.insertBefore(img, container.querySelector('.btn-slide.prev'));
+
+                const thumb = document.createElement('img');
+                thumb.src = url;
+                thumb.alt = `Thumb ${i + 1}`;
+                if (i === 0) thumb.classList.add('ativa');
+                thumb.onclick = () => irParaSlide(i);
+                thumbs.appendChild(thumb);
+            });
+        }
+
+        function irParaSlide(i) {
+            const imgs = document.querySelectorAll('#sliderContainer img');
+            const thumbs = document.querySelectorAll('#thumbnails img');
+            imgs[slideAtual]?.classList.remove('ativa');
+            thumbs[slideAtual]?.classList.remove('ativa');
+            slideAtual = i;
+            imgs[slideAtual]?.classList.add('ativa');
+            thumbs[slideAtual]?.classList.add('ativa');
+        }
+
+        function slideProximo() { irParaSlide((slideAtual + 1) % screenshots.length); }
+        function slideAnterior() { irParaSlide((slideAtual - 1 + screenshots.length) % screenshots.length); }
+
+        // ── Tradução via MyMemory ────────────────────────────────
+        async function traduzir(texto) {
+            if (!texto) return 'Sem descrição disponível.';
+            // Limita a 500 chars para caber no limite gratuito da API
+            const trecho = texto.substring(0, 500);
+            try {
+                const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(trecho)}&langpair=en|pt-br`);
+                const data = await res.json();
+                return data.responseData?.translatedText ?? texto;
+            } catch {
+                return texto;
+            }
+        }
+
+        // ── Carregar jogo ────────────────────────────────────────
+        async function carregarJogo() {
+            const [jogoRes, screenshotsRes] = await Promise.all([
+                fetch(`https://api.rawg.io/api/games/${id}?key=${API_KEY}`),
+                fetch(`https://api.rawg.io/api/games/${id}/screenshots?key=${API_KEY}`)
+            ]);
+
+            const jogo = await jogoRes.json();
+            const screenshotsData = await screenshotsRes.json();
+
+            // Título
+            document.title = jogo.name + ' — Orbit';
+            document.getElementById('nome').textContent = jogo.name;
+            document.getElementById('breadcrumbNome').textContent = jogo.name;
+
+            // Capa
+            document.getElementById('capa').src = jogo.background_image ?? 'imagem-padrao.jpg';
+            document.getElementById('capa').alt = jogo.name;
+
+            // Screenshots
+            const imgs = screenshotsData.results?.map(s => s.image) ?? [];
+            if (imgs.length === 0 && jogo.background_image) imgs.push(jogo.background_image);
+            renderizarSlider(imgs);
+
+            // Avaliação
+            document.getElementById('avaliacao').innerHTML =
+                `⭐ ${jogo.rating}/5 <span class="text-muted" style="font-size:0.8rem;">(${jogo.ratings_count} avaliações)</span>`;
+
+            // Lançamento
+            const dataLanc = jogo.released
+                ? new Date(jogo.released).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })
+                : 'Não informado';
+            document.getElementById('lancamento').textContent = dataLanc;
+
+            // Desenvolvedor e Publicadora
+            document.getElementById('desenvolvedor').textContent =
+                jogo.developers?.map(d => d.name).join(', ') || 'Não informado';
+            document.getElementById('publicadora').textContent =
+                jogo.publishers?.map(p => p.name).join(', ') || 'Não informado';
+
+            // Gêneros como tags
+            const generosEl = document.getElementById('generos');
+            (jogo.genres ?? []).forEach(g => {
+                const tag = document.createElement('span');
+                tag.className = 'tag-genero';
+                tag.textContent = g.name;
+                generosEl.appendChild(tag);
             });
 
-        // Ativa todos os tooltips da página
-        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
-            new bootstrap.Tooltip(el);
+            // Preço
+            const promo = gerarPromocao(jogo.id);
+            const precoEl = document.getElementById('precoContainer');
+            if (!promo.emPromocao) {
+                precoEl.innerHTML = `<span class="fw-bold text-white" style="font-size:1.6rem;">R$ ${promo.precoOriginal}</span>`;
+            } else {
+                precoEl.innerHTML = `
+                    <div class="d-flex align-items-center gap-2 mb-1">
+                        <span class="badge text-white" style="background-color:#6610f2; font-size:0.85rem;">-${promo.desconto}% OFF</span>
+                        <span class="text-muted text-decoration-line-through">R$ ${promo.precoOriginal}</span>
+                    </div>
+                    <span class="fw-bold text-warning" style="font-size:1.6rem;">R$ ${promo.precoAtual}</span>
+                `;
+            }
+
+            // Descrição traduzida
+            const descricaoTraduzida = await traduzir(jogo.description_raw);
+            document.getElementById('descricao').textContent = descricaoTraduzida;
+        }
+
+        carregarJogo().catch(() => {
+            document.getElementById('nome').textContent = 'Jogo não encontrado.';
         });
 
-        // ── Sistema de login ──────────────────────────────────────
+        // ── Carrinho ─────────────────────────────────────────────
+        function adicionarAoCarrinho() {
+            const nome = document.getElementById('nome').textContent;
+            const capa = document.getElementById('capa').src;
+            const promo = gerarPromocao(parseInt(id));
+            const preco = promo.emPromocao ? promo.precoAtual : promo.precoOriginal;
+
+            const carrinho = JSON.parse(localStorage.getItem('orbitCarrinho') ?? '[]');
+            const jaExiste = carrinho.some(item => item.id === id);
+
+            if (!jaExiste) {
+                carrinho.push({ id, nome, capa, preco });
+                localStorage.setItem('orbitCarrinho', JSON.stringify(carrinho));
+            }
+
+            alert(jaExiste ? `"${nome}" já está no carrinho!` : `"${nome}" adicionado ao carrinho!`);
+        }
+
+        // ── Busca ─────────────────────────────────────────────────
+        function buscar(event) {
+            event.preventDefault();
+            const termo = document.getElementById('campoBusca').value.trim();
+            if (termo) window.location.href = `resultado.html?q=${encodeURIComponent(termo)}`;
+        }
+
+        // ── Login ─────────────────────────────────────────────────
         function atualizarAreaLogin() {
             const usuario = localStorage.getItem('orbitUsuario');
             const area = document.getElementById('areaLogin');
-
             if (usuario) {
                 area.innerHTML = `
-            <div class="dropdown">
-                <span class="text-white fw-bold dropdown-toggle" style="cursor:pointer; font-size:0.95rem;"
-                      data-bs-toggle="dropdown">
-                    👤 ${usuario}
-                </span>
-                <ul class="dropdown-menu dropdown-menu-end" style="background-color:#1a1a2e; border-color:#6610f2;">
-                    <li>
-                        <button class="dropdown-item text-danger" onclick="sairConta()">Sair</button>
-                    </li>
-                </ul>
-            </div>
-        `;
+                    <div class="dropdown">
+                        <span class="text-white fw-bold dropdown-toggle" style="cursor:pointer; font-size:0.95rem;"
+                              data-bs-toggle="dropdown">👤 ${usuario}</span>
+                        <ul class="dropdown-menu dropdown-menu-end" style="background-color:#1a1a2e; border-color:#6610f2;">
+                            <li><button class="dropdown-item text-danger" onclick="sairConta()">Sair</button></li>
+                        </ul>
+                    </div>`;
             } else {
                 area.innerHTML = `
-            <img src="./LoginIcon.png" alt="Login" width="36" height="36"
-                 style="cursor:pointer;"
-                 data-bs-toggle="modal" data-bs-target="#modalLogin"
-                 title="Criar conta / Entrar">
-        `;
+                    <img src="./LoginIcon.png" alt="Login" width="36" height="36"
+                         style="cursor:pointer;"
+                         data-bs-toggle="modal" data-bs-target="#modalLogin"
+                         title="Criar conta / Entrar">`;
             }
         }
 
         function criarConta() {
             const usuario = document.getElementById('inputUsuario').value.trim();
-            const email = document.getElementById('inputEmail').value.trim();
-            const senha = document.getElementById('inputSenha').value;
-            const erro = document.getElementById('erroLogin');
-
-            if (!usuario || !email || !senha) {
-                erro.textContent = 'Por favor, preencha todos os campos.';
-                erro.style.display = 'block';
-                return;
-            }
-
-            if (senha.length < 6) {
-                erro.textContent = 'A senha deve ter pelo menos 6 caracteres.';
-                erro.style.display = 'block';
-                return;
-            }
-
+            const email   = document.getElementById('inputEmail').value.trim();
+            const senha   = document.getElementById('inputSenha').value;
+            const erro    = document.getElementById('erroLogin');
+            if (!usuario || !email || !senha) { erro.textContent = 'Por favor, preencha todos os campos.'; erro.style.display = 'block'; return; }
+            if (senha.length < 6) { erro.textContent = 'A senha deve ter pelo menos 6 caracteres.'; erro.style.display = 'block'; return; }
             localStorage.setItem('orbitUsuario', usuario);
             localStorage.setItem('orbitEmail', email);
-
             bootstrap.Modal.getInstance(document.getElementById('modalLogin')).hide();
             atualizarAreaLogin();
-
             document.getElementById('inputUsuario').value = '';
             document.getElementById('inputEmail').value = '';
             document.getElementById('inputSenha').value = '';
@@ -266,18 +500,9 @@
             atualizarAreaLogin();
         }
 
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
         atualizarAreaLogin();
-
-        // ── Busca ────────────────────────────────────────────────
-        function buscar(event) {
-            event.preventDefault();
-            const termo = document.getElementById('campoBusca').value.trim();
-            if (termo) {
-                window.location.href = `resultado.html?q=${encodeURIComponent(termo)}`;
-            }
-        }
     </script>
 
 </body>
-
 </html>
