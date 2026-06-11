@@ -138,35 +138,68 @@
         </div>
     </nav>
 
-    <!-- Modal de cadastro -->
+    <!-- Modal de login/cadastro -->
     <div class="modal fade" id="modalLogin" tabindex="-1" aria-labelledby="modalLoginLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" style="background-color: #1a1a2e; border: 1px solid #6610f2;">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title text-white" id="modalLoginLabel">Criar conta</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <div class="modal-header border-0 pb-0">
+                    <div class="w-100">
+                        <h5 class="modal-title text-white mb-3" id="modalLoginLabel">Bem-vindo à Orbit</h5>
+                        <!-- Abas -->
+                        <ul class="nav nav-tabs border-0" id="abasLogin">
+                            <li class="nav-item">
+                                <button class="nav-link active text-white" id="abaEntrar" onclick="trocarAba('entrar')"
+                                    style="background:none; border-bottom: 2px solid #6610f2;">Entrar</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link text-muted" id="abaCriar" onclick="trocarAba('criar')"
+                                    style="background:none; border:none;">Criar conta</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label text-light">Nome de usuário</label>
-                        <input type="text" class="form-control" id="inputUsuario" placeholder="Seu nome de usuário"
-                            style="background-color: #0d0d1a; border-color: #6610f2; color: white;">
+                <div class="modal-body pt-3">
+
+                    <!-- Aba Entrar -->
+                    <div id="painelEntrar">
+                        <div class="mb-3">
+                            <label class="form-label text-light">Nome de usuário</label>
+                            <input type="text" class="form-control" id="loginUsuario" placeholder="Seu nome de usuário"
+                                style="background-color: #0d0d1a; border-color: #6610f2; color: white;">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-light">Senha</label>
+                            <input type="password" class="form-control" id="loginSenha" placeholder="••••••••"
+                                style="background-color: #0d0d1a; border-color: #6610f2; color: white;">
+                        </div>
+                        <p id="erroEntrar" class="text-danger" style="font-size: 0.85rem; display: none;"></p>
+                        <button type="button" class="btn w-100 text-white fw-bold" style="background-color: #6610f2;"
+                            onclick="entrarConta()">Entrar</button>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label text-light">Email</label>
-                        <input type="email" class="form-control" id="inputEmail" placeholder="seu@email.com"
-                            style="background-color: #0d0d1a; border-color: #6610f2; color: white;">
+
+                    <!-- Aba Criar conta -->
+                    <div id="painelCriar" style="display:none;">
+                        <div class="mb-3">
+                            <label class="form-label text-light">Nome de usuário</label>
+                            <input type="text" class="form-control" id="inputUsuario" placeholder="Seu nome de usuário"
+                                style="background-color: #0d0d1a; border-color: #6610f2; color: white;">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-light">Email</label>
+                            <input type="email" class="form-control" id="inputEmail" placeholder="seu@email.com"
+                                style="background-color: #0d0d1a; border-color: #6610f2; color: white;">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-light">Senha</label>
+                            <input type="password" class="form-control" id="inputSenha" placeholder="••••••••"
+                                style="background-color: #0d0d1a; border-color: #6610f2; color: white;">
+                        </div>
+                        <p id="erroLogin" class="text-danger" style="font-size: 0.85rem; display: none;"></p>
+                        <button type="button" class="btn w-100 text-white fw-bold" style="background-color: #6610f2;"
+                            onclick="criarConta()">Criar conta</button>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label text-light">Senha</label>
-                        <input type="password" class="form-control" id="inputSenha" placeholder="••••••••"
-                            style="background-color: #0d0d1a; border-color: #6610f2; color: white;">
-                    </div>
-                    <p id="erroLogin" class="text-danger" style="font-size: 0.85rem; display: none;"></p>
-                </div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn w-100 text-white fw-bold" style="background-color: #6610f2;"
-                        onclick="criarConta()">Criar conta</button>
+
                 </div>
             </div>
         </div>
@@ -356,6 +389,40 @@
             renderizarBiblioteca();
         }
 
+                function trocarAba(aba) {
+            const entrar = document.getElementById('painelEntrar');
+            const criar  = document.getElementById('painelCriar');
+            const abaE   = document.getElementById('abaEntrar');
+            const abaC   = document.getElementById('abaCriar');
+            if (aba === 'entrar') {
+                entrar.style.display = 'block'; criar.style.display = 'none';
+                abaE.classList.add('active'); abaE.style.borderBottom = '2px solid #6610f2'; abaE.classList.remove('text-muted'); abaE.classList.add('text-white');
+                abaC.classList.remove('active'); abaC.style.borderBottom = 'none'; abaC.classList.add('text-muted'); abaC.classList.remove('text-white');
+            } else {
+                criar.style.display = 'block'; entrar.style.display = 'none';
+                abaC.classList.add('active'); abaC.style.borderBottom = '2px solid #6610f2'; abaC.classList.remove('text-muted'); abaC.classList.add('text-white');
+                abaE.classList.remove('active'); abaE.style.borderBottom = 'none'; abaE.classList.add('text-muted'); abaE.classList.remove('text-white');
+            }
+        }
+
+        function entrarConta() {
+            const usuario = document.getElementById('loginUsuario').value.trim();
+            const senha   = document.getElementById('loginSenha').value;
+            const erro    = document.getElementById('erroEntrar');
+            if (!usuario || !senha) { erro.textContent = 'Preencha o nome de usuário e a senha.'; erro.style.display = 'block'; return; }
+            const contas = JSON.parse(localStorage.getItem('orbitContas') ?? '[]');
+            const conta = contas.find(c => c.usuario === usuario);
+            if (!conta) { erro.textContent = 'Usuário não encontrado.'; erro.style.display = 'block'; return; }
+            if (conta.senha !== senha) { erro.textContent = 'Senha incorreta.'; erro.style.display = 'block'; return; }
+            localStorage.setItem('orbitUsuario', usuario);
+            localStorage.setItem('orbitEmail', conta.email);
+            bootstrap.Modal.getInstance(document.getElementById('modalLogin')).hide();
+            document.getElementById('loginUsuario').value = '';
+            document.getElementById('loginSenha').value = '';
+            erro.style.display = 'none';
+            atualizarAreaLogin();
+        }
+
         function criarConta() {
             const usuario = document.getElementById('inputUsuario').value.trim();
             const email   = document.getElementById('inputEmail').value.trim();
@@ -363,6 +430,11 @@
             const erro    = document.getElementById('erroLogin');
             if (!usuario || !email || !senha) { erro.textContent = 'Por favor, preencha todos os campos.'; erro.style.display = 'block'; return; }
             if (senha.length < 6) { erro.textContent = 'A senha deve ter pelo menos 6 caracteres.'; erro.style.display = 'block'; return; }
+            const contas = JSON.parse(localStorage.getItem('orbitContas') ?? '[]');
+            if (contas.some(c => c.usuario === usuario)) { erro.textContent = 'Este nome de usuário já está em uso.'; erro.style.display = 'block'; return; }
+            if (contas.some(c => c.email === email)) { erro.textContent = 'Este email já está cadastrado.'; erro.style.display = 'block'; return; }
+            contas.push({ usuario, email, senha });
+            localStorage.setItem('orbitContas', JSON.stringify(contas));
             localStorage.setItem('orbitUsuario', usuario);
             localStorage.setItem('orbitEmail', email);
             bootstrap.Modal.getInstance(document.getElementById('modalLogin')).hide();
