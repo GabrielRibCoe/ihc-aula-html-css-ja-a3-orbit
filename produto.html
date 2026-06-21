@@ -226,6 +226,25 @@
         </div>
     </div>
 
+    <div class="modal fade modal-compra" id="modalCarrinho" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center p-4">
+                <div class="mb-3" style="font-size: 3.5rem;">🛍️</div>
+                <h4 class="text-white fw-bold mb-2">Produto adicionado ao carrinho!</h4>
+                <p class="text-muted mb-1">Seu produto foi adicionado ao carrinho.</p>
+                <p class="text-muted mb-4" id="msgContaCompra" style="font-size:0.85rem;"></p>
+                <div class="d-flex gap-2 justify-content-center">
+                    <a type="button" href="carrinho.html" class="btn text-white" style="background-color:#6610f2;">
+                        Ver Carrinho
+                    </a>
+                    <a type="button" data-bs-dismiss="modal" class="btn btn-outline-light">
+                        Continuar comprando
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Conteúdo do produto -->
     <div class="container-xl mt-4 mb-5">
 
@@ -476,9 +495,10 @@
             if (!jaExiste) {
                 carrinho.push({ id, nome, capa, preco });
                 localStorage.setItem('orbitCarrinho', JSON.stringify(carrinho));
+                new bootstrap.Modal(document.getElementById('modalCarrinho')).show();
+            } else {
+                alert('Este jogo já está no seu carrinho.');
             }
-
-            alert(jaExiste ? `"${nome}" já está no carrinho!` : `"${nome}" adicionado ao carrinho!`);
         }
 
         // ── Busca ─────────────────────────────────────────────────
